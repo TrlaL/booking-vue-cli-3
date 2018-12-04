@@ -10,6 +10,7 @@ export default new Vuex.Store({
     isLoadedItems: true,
     menuListVisible: false,
     modals: {},
+    openedDropDownId: 1,
     searchQuery: ''
   },
   getters: {
@@ -37,6 +38,9 @@ export default new Vuex.Store({
     },
     SET_MODAL_VISIBLE (state, params) {
       Vue.set(state.modals, params.id, params.visible)
+    },
+    SET_OPENED_DROP_DOWN_ID (state, id) {
+      state.openedDropDownId = id
     },
     SET_SEARCH_QUERY (state, query) {
       state.searchQuery = query

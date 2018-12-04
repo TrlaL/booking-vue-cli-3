@@ -69,7 +69,7 @@
             <div class="title">Select location/neighborhood(s):</div>
             <DropDownList
               v-for="(city, i) in cities"
-              :id="i"
+              :id="1"
               :items="districts"
               :key="i"
               :title="city.title"

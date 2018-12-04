@@ -7,16 +7,19 @@
         <img :src="require(`@/assets/images/${icon}`)">
       </div>
     </div>
-    <div class="items" v-show="opened">
-      <Checkbox
-        class="item"
-        margin="20"
-        size="20"
-        v-for="item in items"
-        v-model="selectedItems"
-        :value="item"
-      >{{ item.title }}</Checkbox>
-    </div>
+    <transition name="fade">
+      <div class="items" v-show="visible">
+        <Checkbox
+          class="item"
+          margin="20"
+          size="20"
+          v-for="(item, i) in items"
+          v-model="selectedItems"
+          :key="i"
+          :value="item"
+        >{{ item.title }}</Checkbox>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -28,6 +31,10 @@ export default {
     Checkbox
   },
   props: {
+    id: {
+      required: true,
+      type: null
+    },
     items: {
       required: true,
       type: Array
@@ -39,19 +46,24 @@ export default {
   },
   data () {
     return {
-      opened: false,
       selectedItems: [],
       toggler: false
     }
   },
   computed: {
     icon () {
-      return this.opened ? 'arrow-top.svg' : 'arrow-bottom.svg'
+      return this.visible ? 'arrow-top.svg' : 'arrow-bottom.svg'
+    },
+    openedId () {
+      return this.$store.getters.openedDropDownId
+    },
+    visible () {
+      return this.id === this.openedId
     }
   },
   methods: {
     toggle () {
-      this.opened = !this.opened
+      this.$store.commit('SET_OPENED_DROP_DOWN_ID', this.id === this.openedId ? null : this.id)
     }
   },
   watch: {
@@ -88,6 +100,7 @@ export default {
     display: flex;
     flex: 1;
     justify-content: space-between;
+    padding-right: 10px;
   }
 }
 
