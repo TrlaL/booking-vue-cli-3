@@ -8,6 +8,7 @@
     <img class="icon mobile" src="@/assets/images/user-black.svg">
     <transition name="fade">
       <div class="list" v-show="menuListVisible">
+        <div class="triangle"></div>
         <router-link to="/favorites">Favorites</router-link>
         <router-link to="/going">I’m Going</router-link>
         <router-link to="/past-booked">Past Booked</router-link>
@@ -106,15 +107,25 @@ export default {
     top: calc(100% + 10px);
   }
 
-  .list::after {
-    content: '▲';
-    color: #fff;
-    display: inline-block;
+  .triangle {
+    height: 30px;
+    overflow: hidden;
     position: absolute;
-    right: 9px;
-    text-shadow: 0 -3px 3px rgba(0, 0, 0, 0.2);
-    transform: scaleX(2);
-    top: -15px;
+    right: -2px;
+    top: -30px;
+    width: 30px;
+  }
+
+  .triangle:after {
+    background: #fff;
+    box-shadow: -2px -2px 2px rgba(0, 0, 0, 0.2);
+    content: '';
+    height: 15px;
+    left: 5px;
+    position: absolute;
+    top: 25px;
+    transform: rotate(45deg);
+    width: 15px;
   }
 }
 </style>
