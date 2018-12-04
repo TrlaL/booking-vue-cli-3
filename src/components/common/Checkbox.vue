@@ -1,6 +1,6 @@
 <template>
   <div class="checkbox" @click="click">
-    <button class="button" :class="buttonClasses" :style="styles"></button>
+    <button class="button" :class="buttonClass" :style="styles"></button>
     <slot></slot>
   </div>
 </template>
@@ -13,6 +13,10 @@ export default {
   },
   props: {
     checked: null,
+    margin: {
+      default: '5',
+      type: String
+    },
     size: {
       default: '10',
       type: String
@@ -20,10 +24,9 @@ export default {
     value: null
   },
   computed: {
-    buttonClasses () {
+    buttonClass () {
       return {
-        checked: this.isChecked,
-        margin: this.hasSlot
+        checked: this.isChecked
       }
     },
     hasSlot () {
@@ -37,8 +40,11 @@ export default {
     },
     styles () {
       return {
-        height: this.size + 'px',
-        width: this.size + 'px'
+        height: this.toPx(this.size),
+        marginRight: this.toPx(this.margin),
+        minHeight: this.toPx(this.size),
+        minWidth: this.toPx(this.size),
+        width: this.toPx(this.size)
       }
     }
   },
@@ -54,6 +60,9 @@ export default {
         }
       }
       this.$emit('input', checked)
+    },
+    toPx (value) {
+      return value + 'px'
     }
   }
 }
@@ -80,9 +89,5 @@ export default {
 
 .checked {
   background: #E1519F;
-}
-
-.margin {
-  margin-right: 5px;
 }
 </style>

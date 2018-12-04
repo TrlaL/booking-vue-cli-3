@@ -1,17 +1,21 @@
 <template>
   <div class="drop-down-list">
-    <div class="header">
-      <div class="title" @click="toggle">
+    <div class="title">
+      <Checkbox class="checkbox" size="20" v-model="toggler" />
+      <div class="line" @click="toggle">
         {{ title }}
-        <img :src="require(`@/assets/images/${iconSrc}`)">
+        <img :src="require(`@/assets/images/${icon}`)">
       </div>
-      <Checkbox size="20" @input="toggleAllItems" v-model="commonCheckbox" />
     </div>
-    <div class="items" v-show="isOpened">
-      <div class="line" :key="i" v-for="(item, i) in items">
-        <div class="item">{{ item }}</div>
-        <Checkbox size="20" @input="toggleItem" v-model="selected[i]" />
-      </div>
+    <div class="items" v-show="opened">
+      <Checkbox
+        class="item"
+        margin="20"
+        size="20"
+        v-for="item in items"
+        v-model="selectedItems"
+        :value="item"
+      >{{ item.title }}</Checkbox>
     </div>
   </div>
 </template>
@@ -24,61 +28,38 @@ export default {
     Checkbox
   },
   props: {
-    id: {
-      required: true,
-      type: Number
-    },
-    title: {
-      required: true,
-      type: String
-    },
     items: {
       required: true,
       type: Array
     },
-    opened: {
-      default: false,
-      type: Boolean
+    title: {
+      required: true,
+      type: String
     }
   },
   data () {
     return {
-      commonCheckbox: false,
-      selected: []
+      opened: false,
+      selectedItems: [],
+      toggler: false
     }
   },
   computed: {
-    iconSrc () {
-      return this.isOpened ? 'arrow-top.svg' : 'arrow-bottom.svg'
-    },
-    isOpened () {
-      return this.openedId === this.id
-    },
-    openedId () {
-      return this.$store.getters.openedDropDownId
-    }
-  },
-  created () {
-    this.selected = new Array(this.items.length).fill(false)
-    if (this.opened) {
-      this.$store.commit('SET_OPENED_DROP_DOWN_ID', this.id)
+    icon () {
+      return this.opened ? 'arrow-top.svg' : 'arrow-bottom.svg'
     }
   },
   methods: {
-    emit () {
-      this.$emit('changed', this.items.filter((item, index) => this.selected[index]))
-    },
     toggle () {
-      this.$store.commit('SET_OPENED_DROP_DOWN_ID', this.isOpened ? 0 : this.id)
+      this.opened = !this.opened
+    }
+  },
+  watch: {
+    selectedItems (items) {
+      this.$emit('changed', items)
     },
-    toggleItem () {
-      let check = this.selected.find(item => item === false)
-      this.commonCheckbox = check === undefined
-      this.emit()
-    },
-    toggleAllItems () {
-      this.selected.fill(this.commonCheckbox)
-      this.emit()
+    toggler (value) {
+      this.selectedItems = (value) ? this.items : []
     }
   }
 }
@@ -87,33 +68,42 @@ export default {
 <style lang="scss" scoped>
 .drop-down-list {
   color: #4F4F4F;
-  user-select: none;
+  font-size: 13px;
 }
-.header {
+
+.checkbox {
+  margin-right: 15px;
+}
+
+.title {
+  align-items: center;
+  border-bottom: 1px solid #bbb;
+  cursor: pointer;
   display: flex;
+  font-weight: 600;
   height: 50px;
-  .title {
+
+  .line {
     align-items: center;
-    border-bottom: 1px solid #aaa;
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+  }
+}
+
+.items {
+  max-height: 300px;
+  overflow-y: auto;
+
+  .item {
+    align-items: center;
     cursor: pointer;
     display: flex;
-    flex: 1;
-    font-size: 13px;
-    font-weight: 700;
-    justify-content: space-between;
-    margin-right: 20px;
-    padding: 10px 0 10px 0;
+    padding: 9px 0 9px 0;
   }
-}
-.items {
-  font-size: 12px;
-  .line {
-    display: flex;
-  }
-  .item {
+
+  .content {
     flex: 1;
-    margin-right: 20px;
-    padding: 12px 0 12px 0;
   }
 }
 </style>

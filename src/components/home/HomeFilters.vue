@@ -66,10 +66,15 @@
         </div>
         <div class="column">
           <div class="filter">
-            <div class="title">Select location/ neighborhood(s):</div>
-            <DropDownList title="Manhattan" :id="1" :items="[1, 2, 3, 4, 5]" />
-            <DropDownList title="Brooklyn" :id="2" :items="[1, 2, 3, 4, 5, 6]" />
-            <DropDownList title="Queens" :id="3" :items="[1, 2, 3, 4]" />
+            <div class="title">Select location/neighborhood(s):</div>
+            <DropDownList
+              v-for="(city, i) in cities"
+              :id="i"
+              :items="districts"
+              :key="i"
+              :title="city.title"
+              @changed="locationChange"
+            />
           </div>
         </div>
       </div>
@@ -87,6 +92,7 @@ import Calendar from '../filters/Calendar'
 import Checkbox from '../common/Checkbox'
 import DropDownList from '../filters/DropDownList'
 import Slider from 'vue-slider-component'
+import { getCities, getDistricts } from '@/api/helpers'
 
 export default {
   components: {
@@ -100,6 +106,9 @@ export default {
     return {
       ages: null,
       categories: [1, 2, 3, 4],
+      regionId: 5060716,
+      cities: [],
+      districts: [],
       filters: {},
       onlyWithParents: false,
       onlyOvernightCamp: false,
@@ -141,7 +150,23 @@ export default {
       }
     }
   },
+  created () {
+    this.getCities(this.regionId)
+    this.getDistricts(this.regionId)
+  },
   methods: {
+    async getCities (id) {
+      let response = await getCities(id)
+      if (response.data.result) {
+        this.cities = response.data.items
+      }
+    },
+    async getDistricts (id) {
+      let response = await getDistricts(id)
+      if (response.data.result) {
+        this.districts = response.data.items
+      }
+    },
     apply () {
       this.$store.commit('SET_FILTERS_OPENED', false)
       this.$store.commit('SET_FILTERS', this.filters)
@@ -158,6 +183,15 @@ export default {
       this.timeStamp = null
       this.$store.commit('SET_FILTERS', {})
       this.$store.commit('SET_FILTERS_OPENED', false)
+    },
+    locationChange (items) {
+      if (items.length) {
+        this.filters.cityId = this.regionId
+        this.filters.districtId = items.map(item => item.id)
+      } else {
+        delete this.filters.cityId
+        delete this.filters.districtId
+      }
     },
     resetPrice () {
       this.price = [0, 200]

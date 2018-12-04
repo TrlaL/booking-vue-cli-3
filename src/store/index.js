@@ -10,34 +10,17 @@ export default new Vuex.Store({
     isLoadedItems: true,
     menuListVisible: false,
     modals: {},
-    openedDropDownId: 1,
     searchQuery: ''
   },
   getters: {
-    filters (state) {
-      return state.filters
-    },
-    isFiltersOpened (state) {
-      return state.isFiltersOpened
-    },
-    isLoadedItems (state) {
-      return state.isLoadedItems
-    },
-    menuListVisible (state) {
-      return state.menuListVisible
-    },
-    modals (state) {
-      return state.modals
-    },
-    modalVisible: (state) => (id) => {
-      return state.modals[id]
-    },
-    openedDropDownId (state) {
-      return state.openedDropDownId
-    },
-    searchQuery (state) {
-      return state.searchQuery
-    }
+    filters: (state) => state.filters,
+    isFiltersOpened: (state) => state.isFiltersOpened,
+    isLoadedItems: (state) => state.isLoadedItems,
+    menuListVisible: (state) => state.menuListVisible,
+    modals: (state) => state.modals,
+    modalVisible: (state) => (id) => state.modals[id],
+    openedDropDownId: (state) => state.openedDropDownId,
+    searchQuery: (state) => state.searchQuery
   },
   mutations: {
     SET_FILTERS (state, filters) {
@@ -54,9 +37,6 @@ export default new Vuex.Store({
     },
     SET_MODAL_VISIBLE (state, params) {
       Vue.set(state.modals, params.id, params.visible)
-    },
-    SET_OPENED_DROP_DOWN_ID (state, id) {
-      state.openedDropDownId = id
     },
     SET_SEARCH_QUERY (state, query) {
       state.searchQuery = query
