@@ -1,0 +1,15 @@
+$break-point: 850px;
+$gradient: linear-gradient(180deg, rgba(255, 192, 0, 0.0001) 51.87%, rgba(255, 232, 0, 0.311453) 100%), linear-gradient(356.62deg, rgba(140, 85, 241, 0.0001) 0%, rgba(76, 0, 255, 0.455984) 100%), linear-gradient(183.34deg, #E4549F 0%, #FF3C7B 100.62%);
+$modal-width: 700px;
+
+@mixin desktop {
+  @media (min-width: $break-point) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (max-width: $break-point) {
+    @content;
+  }
+}
