@@ -16,9 +16,7 @@ import Modal from '../common/Modal'
 import { activatePromocode } from '@/api/profile'
 
 export default {
-  components: {
-    Modal
-  },
+  components: { Modal },
   data () {
     return {
       code: '',

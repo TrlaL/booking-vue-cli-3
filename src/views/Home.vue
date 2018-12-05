@@ -18,12 +18,7 @@ import Loading from '@/components/common/Loading'
 import { getActivities } from '@/api/activities'
 
 export default {
-  components: {
-    ActivitiesList,
-    ActivitiesTypes,
-    HomeControls,
-    Loading
-  },
+  components: { ActivitiesList, ActivitiesTypes, HomeControls, Loading },
   data () {
     return {
       activityTypeId: 1,

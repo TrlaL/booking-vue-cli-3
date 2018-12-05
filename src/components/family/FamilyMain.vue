@@ -6,26 +6,14 @@
         Kid(s)
       </div>
       <div class="persons" v-if="isLoaded">
-        <div class="person" v-for="(kid, i) in kids" :key="i">
-          <img class="icon" src="@/assets/images/kid.svg">
-          <div class="forms">
-            <div>
-              <label>Full Name</label>
-              <input type="text" v-model="kid.fullName">
-            </div>
-            <div>
-              <label>Date of Birth</label>
-              <input type="text" v-model="kid.birthDate">
-            </div>
-          </div>
-          <div class="buttons">
-            <button @click="savePeson('kid', kid)">{{ kid.isNew ? 'Save' : 'Update' }}</button>
-            <template v-if="!kid.isNew">
-              <button class="mobile-remove" @click="deletePerson(kid.id)">Remove</button>
-              <img class="desktop-remove" src="@/assets/images/reset.svg" @click="deletePerson(kid.id)">
-            </template>
-          </div>
-        </div>
+        <FamilyPerson
+          person="kid"
+          v-for="(kid, i) in kids"
+          :data="kid"
+          :key="i"
+          @deletePerson="deletePerson"
+          @savePerson="savePerson"
+        />
       </div>
       <Loading v-else />
       <div class="empty" v-show="isLoaded && !kids.length">You have not added children yet.</div>
@@ -39,30 +27,14 @@
         Caregiver(s)
       </div>
       <div class="persons" v-if="isLoaded">
-        <div class="person" v-for="(caregiver, i) in caregivers" :key="i">
-          <img class="icon" src="@/assets/images/user-black.svg">
-          <div class="forms">
-            <div>
-              <label>Full Name</label>
-              <input type="text" v-model="caregiver.fullName">
-            </div>
-            <div>
-              <label>Email</label>
-              <input type="text" v-model="caregiver.email">
-            </div>
-            <div>
-              <label>Phone</label>
-              <input type="text" v-model="caregiver.phone">
-            </div>
-          </div>
-          <div class="buttons">
-            <button @click="savePeson('caregiver', caregiver)">{{ caregiver.isNew ? 'Save' : 'Update' }}</button>
-            <template v-if="!caregiver.isNew">
-              <button class="mobile-remove" @click="deletePerson(caregiver.id)">Remove</button>
-              <img class="desktop-remove" src="@/assets/images/reset.svg" @click="deletePerson(caregiver.id)">
-            </template>
-          </div>
-        </div>
+        <FamilyPerson
+          person="caregiver"
+          v-for="(caregiver, i) in caregivers"
+          :data="caregiver"
+          :key="i"
+          @deletePerson="deletePerson"
+          @savePerson="savePerson"
+        />
       </div>
       <Loading v-else />
       <div class="empty" v-show="isLoaded && !caregivers.length">You have not added caregivers yet.</div>
@@ -74,21 +46,14 @@
 </template>
 
 <script>
+import FamilyPerson from './FamilyPerson'
 import Loading from '@/components/common/Loading'
 
 export default {
-  components: {
-    Loading
-  },
+  components: { FamilyPerson, Loading },
   props: {
-    isLoaded: {
-      required: true,
-      type: Boolean
-    },
-    members: {
-      required: true,
-      type: Array
-    }
+    isLoaded: { required: true, type: Boolean },
+    members: { required: true, type: Array }
   },
   computed: {
     caregivers () {
@@ -105,7 +70,7 @@ export default {
     deletePerson (id) {
       this.$emit('deletePerson', id)
     },
-    savePeson (person, data) {
+    savePerson (person, data) {
       this.$emit('savePerson', person, data)
     }
   }
@@ -139,73 +104,6 @@ export default {
 
     .title-icon {
       display: none;
-    }
-  }
-
-  .person {
-    display: flex;
-    margin-bottom: 25px;
-
-    .icon {
-      margin-right: 50px;
-      object-fit: contain;
-    }
-
-    .forms {
-      display: flex;
-      flex: 1;
-
-      div {
-        display: flex;
-        flex-direction: column;
-        margin-right: 15px;
-
-        &:last-child {
-          margin: 0;
-        }
-      }
-
-      label {
-        color: #A1A1A1;
-        font-size: 14px;
-      }
-
-      input {
-        border: 0;
-        border-bottom: 1px solid #D4D4D4;
-        color: #4F4F4F;
-        font: inherit;
-        padding: 7px 0 7px 0;
-        width: 100%;
-      }
-    }
-
-    .buttons {
-      align-items: center;
-      display: flex;
-      justify-content: space-between;
-      margin-left: 50px;
-      width: 120px;
-
-      .mobile-remove {
-        display: none;
-      }
-
-      button {
-        background: #E1519F;
-        border: 0;
-        border-radius: 5px;
-        color: #fff;
-        cursor: pointer;
-        font: inherit;
-        flex-shrink: 0;
-        padding: 8px 0 8px 0;
-        width: 90px;
-      }
-
-      img {
-        cursor: pointer;
-      }
     }
   }
 

@@ -70,25 +70,11 @@ import Counter from '../common/Counter'
 import Loading from '../common/Loading'
 
 export default {
-  components: {
-    BookingPerson,
-    BookingTotal,
-    Counter,
-    Loading
-  },
+  components: { BookingPerson, BookingTotal, Counter, Loading },
   props: {
-    isLoaded: {
-      required: true,
-      type: Boolean
-    },
-    item: {
-      required: true,
-      type: Object
-    },
-    members: {
-      required: true,
-      type: Array
-    }
+    isLoaded: { required: true, type: Boolean },
+    item: { required: true, type: Object },
+    members: { required: true, type: Array }
   },
   data () {
     return {

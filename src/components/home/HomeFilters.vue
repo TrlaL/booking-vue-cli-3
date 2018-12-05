@@ -95,13 +95,7 @@ import Slider from 'vue-slider-component'
 import { getCities, getDistricts } from '@/api/helpers'
 
 export default {
-  components: {
-    AgesTable,
-    Calendar,
-    Checkbox,
-    DropDownList,
-    Slider
-  },
+  components: { AgesTable, Calendar, Checkbox, DropDownList, Slider },
   data () {
     return {
       ages: null,

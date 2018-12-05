@@ -7,20 +7,11 @@
 
 <script>
 export default {
-  model: {
-    prop: 'checked',
-    event: 'input'
-  },
+  model: { prop: 'checked', event: 'input' },
   props: {
     checked: null,
-    margin: {
-      default: '5',
-      type: String
-    },
-    size: {
-      default: '10',
-      type: String
-    },
+    margin: { default: '5', type: String },
+    size: { default: '10', type: String },
     value: null
   },
   computed: {

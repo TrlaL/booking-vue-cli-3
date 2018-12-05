@@ -24,10 +24,7 @@ import HomeFilters from './HomeFilters'
 import MenuButton from '../common/MenuButton'
 
 export default {
-  components: {
-    HomeFilters,
-    MenuButton
-  },
+  components: { HomeFilters, MenuButton },
   data () {
     return {
       query: this.searchQuery

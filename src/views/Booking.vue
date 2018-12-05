@@ -13,9 +13,7 @@ import { getActivity } from '@/api/activities'
 import { getFamilyMembers, saveAdult, saveChild } from '@/api/profile'
 
 export default {
-  components: {
-    BookingMain
-  },
+  components: { BookingMain },
   data () {
     return {
       isLoaded: false,

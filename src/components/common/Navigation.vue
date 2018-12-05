@@ -13,9 +13,7 @@
 import MenuButton from '../common/MenuButton'
 
 export default {
-  components: {
-    MenuButton
-  },
+  components: { MenuButton },
   computed: {
     title () {
       return this.$route.meta.title

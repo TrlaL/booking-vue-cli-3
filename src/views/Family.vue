@@ -19,11 +19,7 @@ import Navigation from '@/components/common/Navigation'
 import { deleteFamilyMember, getFamilyMembers, saveAdult, saveChild } from '@/api/profile'
 
 export default {
-  components: {
-    FamilyMain,
-    Modal,
-    Navigation
-  },
+  components: { FamilyMain, Modal, Navigation },
   data () {
     return {
       isLoaded: false,

@@ -11,14 +11,9 @@
 import Activity from './Activity'
 
 export default {
-  components: {
-    Activity
-  },
+  components: { Activity },
   props: {
-    items: {
-      required: true,
-      type: Array
-    }
+    items: { required: true, type: Array }
   },
   computed: {
     isLoadedItems () {

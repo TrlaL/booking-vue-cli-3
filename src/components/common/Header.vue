@@ -32,9 +32,7 @@
 import MenuButton from './MenuButton'
 
 export default {
-  components: {
-    MenuButton
-  },
+  components: { MenuButton },
   data () {
     return {
       query: this.searchQuery

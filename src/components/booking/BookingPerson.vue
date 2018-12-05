@@ -17,18 +17,10 @@
 import Switcher from '../common/Switcher'
 
 export default {
-  components: {
-    Switcher
-  },
+  components: { Switcher },
   props: {
-    person: {
-      required: true,
-      type: Object
-    },
-    price: {
-      default: 0,
-      type: Number
-    }
+    person: { required: true, type: Object },
+    price: { default: 0, type: Number }
   },
   computed: {
     iconSrc () {

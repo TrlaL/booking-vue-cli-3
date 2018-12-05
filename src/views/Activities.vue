@@ -21,12 +21,7 @@ import { getFavorites } from '@/api/favorites'
 import { getCurrentActivities, getPastActivities } from '@/api/bookings'
 
 export default {
-  components: {
-    ActivitiesList,
-    ActivitiesTypes,
-    Loading,
-    Navigation
-  },
+  components: { ActivitiesList, ActivitiesTypes, Loading, Navigation },
   data () {
     return {
       api: null,

@@ -63,10 +63,7 @@ import { setFavorite, unsetFavorite } from '@/api/favorites'
 
 export default {
   props: {
-    item: {
-      required: true,
-      type: Object
-    }
+    item: { required: true, type: Object }
   },
   computed: {
     favoriteIcon () {

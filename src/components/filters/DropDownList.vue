@@ -27,22 +27,11 @@
 import Checkbox from '../common/Checkbox'
 
 export default {
-  components: {
-    Checkbox
-  },
+  components: { Checkbox },
   props: {
-    id: {
-      required: true,
-      type: null
-    },
-    items: {
-      required: true,
-      type: Array
-    },
-    title: {
-      required: true,
-      type: String
-    }
+    id: { required: true, type: null },
+    items: { required: true, type: Array },
+    title: { required: true, type: String }
   },
   data () {
     return {

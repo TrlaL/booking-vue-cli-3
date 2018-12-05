@@ -13,10 +13,7 @@ import Footer from './components/common/Footer'
 import Header from './components/common/Header'
 
 export default {
-  components: {
-    Footer,
-    Header
-  }
+  components: { Footer, Header }
 }
 </script>
 

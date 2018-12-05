@@ -9,18 +9,9 @@
 <script>
 export default {
   props: {
-    font: {
-      default: '20',
-      type: String
-    },
-    size: {
-      default: '30',
-      type: String
-    },
-    value: {
-      default: 0,
-      type: Number
-    }
+    font: { default: '20', type: String },
+    size: { default: '30', type: String },
+    value: { default: 0, type: Number }
   },
   data () {
     return {

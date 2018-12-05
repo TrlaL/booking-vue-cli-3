@@ -26,11 +26,7 @@ import { loadUserSettings, saveUserSettings } from '@/api/profile'
 import { getCards, createCard, deleteCard, updateCard } from '@/api/cards'
 
 export default {
-  components: {
-    AccountMain,
-    Modal,
-    Navigation
-  },
+  components: { AccountMain, Modal, Navigation },
   data () {
     return {
       cards: [],

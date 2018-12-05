@@ -93,27 +93,12 @@ import AccountModal from './AccountModal'
 import Loading from '../common/Loading'
 
 export default {
-  components: {
-    AccountModal,
-    Loading
-  },
+  components: { AccountModal, Loading },
   props: {
-    cards: {
-      required: true,
-      type: Array
-    },
-    credits: {
-      required: true,
-      type: Array
-    },
-    loaded: {
-      required: true,
-      type: Object
-    },
-    settings: {
-      required: true,
-      type: Object
-    }
+    cards: { required: true, type: Array },
+    credits: { required: true, type: Array },
+    loaded: { required: true, type: Object },
+    settings: { required: true, type: Object }
   },
   methods: {
     addCredit () {

@@ -22,18 +22,9 @@
 <script>
 export default {
   props: {
-    id: {
-      required: true,
-      type: String
-    },
-    title: {
-      default: 'Modal Window',
-      type: String
-    },
-    buttons: {
-      default: false,
-      type: Boolean
-    }
+    id: { required: true, type: String },
+    title: { default: 'Modal Window', type: String },
+    buttons: { default: false, type: Boolean }
   },
   computed: {
     modalVisible () {

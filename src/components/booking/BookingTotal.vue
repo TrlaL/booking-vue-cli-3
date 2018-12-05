@@ -21,14 +21,9 @@
 import Checkbox from '@/components/common/Checkbox'
 
 export default {
-  components: {
-    Checkbox
-  },
+  components: { Checkbox },
   props: {
-    totalSum: {
-      default: 0,
-      type: Number
-    }
+    totalSum: { default: 0, type: Number }
   },
   data () {
     return {
