@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div class="modal" v-show="modalVisible">
+    <div class="modal" v-if="modalVisible">
       <div class="blackout"></div>
       <div class="box">
         <div class="close" @click="handleButton(false)">
@@ -60,7 +60,7 @@ export default {
 }
 
 .blackout {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.4);
   height: 100%;
   position: absolute;
   width: 100%;

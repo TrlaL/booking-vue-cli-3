@@ -1,23 +1,48 @@
 <template>
   <div class="family-person">
+    <Modal class="modal" id="family-person">You entered incorrect data!</Modal>
     <img class="icon" :src="require(`@/assets/images/${icon}`)">
     <div class="forms">
       <div>
         <label>Full Name</label>
-        <input type="text" v-model="data.fullName">
+        <input
+          name="fullName"
+          placeholder="Enter full name"
+          type="text"
+          v-validate="'required|min:1|max:200'"
+          v-model="data.fullName"
+        >
       </div>
       <div v-if="isKid">
         <label>Date of Birth</label>
-        <input type="text" v-model="data.birthDate">
+        <input
+          name="birthDate"
+          placeholder="YYYY-MM-DD"
+          type="text"
+          v-validate="'required|date_format:YYYY-MM-DD'"
+          v-model="data.birthDate"
+        >
       </div>
       <template v-if="isCaregiver">
         <div>
           <label>Email</label>
-          <input type="text" v-model="data.email">
+          <input
+            name="email"
+            placeholder="example@gmail.com"
+            type="text"
+            v-validate="'required|email'"
+            v-model="data.email"
+          >
         </div>
         <div>
           <label>Phone</label>
-          <input type="text" v-model="data.phone">
+          <input
+            name="phone"
+            placeholder="111-222-3333"
+            type="text"
+            v-validate="'required|min:1|max:50'"
+            v-model="data.phone"
+          >
         </div>
       </template>
     </div>
@@ -32,7 +57,10 @@
 </template>
 
 <script>
+import Modal from '../common/Modal'
+
 export default {
+  components: { Modal },
   props: {
     data: { required: true, type: Object },
     person: { required: true, type: String }
@@ -53,77 +81,166 @@ export default {
       this.$emit('deletePerson', id)
     },
     savePerson (person, data) {
-      this.$emit('savePerson', person, data)
+      this.$validator.validateAll().then(checked => {
+        if (checked) {
+          this.$emit('savePerson', person, data)
+        } else {
+          this.$store.commit('SET_MODAL_VISIBLE', { id: 'family-person', visible: true })
+        }
+      })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.family-person {
-  display: flex;
-  margin-bottom: 25px;
-}
-
-.icon {
-  margin-right: 50px;
-  object-fit: contain;
-}
-
-.forms {
-  display: flex;
-  flex: 1;
-
-  div {
+@include desktop {
+  .family-person {
     display: flex;
-    flex-direction: column;
-    margin-right: 15px;
+    margin-bottom: 25px;
+  }
 
-    &:last-child {
-      margin: 0;
+  .modal {
+    text-align: center;
+  }
+
+  .icon {
+    margin-right: 50px;
+    object-fit: contain;
+  }
+
+  .forms {
+    display: flex;
+    flex: 1;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      margin-right: 15px;
+
+      &:last-child {
+        margin: 0;
+      }
+    }
+
+    label {
+      color: #888;
+      font-size: 14px;
+    }
+
+    input {
+      border: 0;
+      border-bottom: 1px solid #D4D4D4;
+      color: #4F4F4F;
+      font: inherit;
+      padding: 7px 0 7px 0;
+      width: 100%;
+
+      &::placeholder {
+        color: #aaa;
+      }
     }
   }
 
-  label {
-    color: #A1A1A1;
-    font-size: 14px;
-  }
+  .buttons {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 50px;
+    width: 120px;
 
-  input {
-    border: 0;
-    border-bottom: 1px solid #D4D4D4;
-    color: #4F4F4F;
-    font: inherit;
-    padding: 7px 0 7px 0;
-    width: 100%;
+    .mobile-remove {
+      display: none;
+    }
+
+    button {
+      background: #E1519F;
+      border: 0;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+      font: inherit;
+      flex-shrink: 0;
+      padding: 8px 0 8px 0;
+      width: 90px;
+    }
+
+    img {
+      cursor: pointer;
+    }
   }
 }
 
-.buttons {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  margin-left: 50px;
-  width: 120px;
+@include mobile {
+ .family-person {
+    border-bottom: 1px solid #ddd;
+    padding: 20px;
 
-  .mobile-remove {
-    display: none;
-  }
+    &:last-child {
+      border-bottom: 0;
+    }
 
-  button {
-    background: #E1519F;
-    border: 0;
-    border-radius: 5px;
-    color: #fff;
-    cursor: pointer;
-    font: inherit;
-    flex-shrink: 0;
-    padding: 8px 0 8px 0;
-    width: 90px;
-  }
+    .icon {
+      display: none;
+    }
 
-  img {
-    cursor: pointer;
+    .forms {
+      margin-bottom: 10px;
+
+      div {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+      }
+
+      label {
+        color: #888;
+        font-size: 14px;
+      }
+
+      input {
+        border: 0;
+        border-bottom: 1px solid #D4D4D4;
+        color: #4F4F4F;
+        font: inherit;
+        padding: 7px 0 7px 0;
+        width: 100%;
+
+        &::placeholder {
+          color: #aaa;
+        }
+      }
+    }
+
+    .buttons {
+      display: flex;
+
+      .desktop-remove {
+        display: none;
+      }
+
+      .mobile-remove {
+        background: #fff;
+        color: #E1519F;
+      }
+
+      button {
+        background: #E1519F;
+        border: 2px solid #E1519F;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        font: inherit;
+        flex: 1;
+        margin-right: 10px;
+        padding: 8px 0 8px 0;
+        width: 90px;
+
+        &:last-child {
+          margin: 0;
+        }
+      }
+    }
   }
 }
 </style>
