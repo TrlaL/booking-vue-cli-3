@@ -18,9 +18,9 @@
               :key="i"
               :person="kid"
               :price="item.price"
-              @changePerson="changeKid"
+              @changePerson="changePerson"
             />
-            <a class="add" href="#">+ Add Kid Profile</a>
+            <a class="add" @click="addPerson('kid')">+ Add Kid Profile</a>
           </div>
           <Loading v-else />
         </div>
@@ -32,15 +32,33 @@
               :key="i"
               :person="caregiver"
               :price="item.price"
-              @changePerson="changeCaregiver"
+              @changePerson="changePerson"
             />
-            <a class="add" href="#">+ Add Kid Profile</a>
-            <a class="add-attendee" href="#">Add attendee(s) without adding to profile</a>
+            <a class="add" @click="addPerson('caregiver')">+ Add Caregiver Profile</a>
           </div>
           <Loading v-else />
         </div>
+        <div class="block">
+          <a class="add-attendee" @click="additionalVisible = !additionalVisible">Add attendee(s) without adding to profile</a>
+          <template v-if="additionalVisible">
+            <div class="additional">
+              <div>Additional kid(s):</div>
+              <div>
+                <Counter v-model="additionalKids" />
+                <span>${{ additionalKids * item.price }}</span>
+              </div>
+            </div>
+            <div class="additional">
+              <div>Additional adult(s):</div>
+              <div>
+                <Counter v-model="additionalAdults" />
+                <span>${{ additionalAdults * item.price }}</span>
+              </div>
+            </div>
+          </template>
+        </div>
       </div>
-      <BookingTotal :totalSum="totalSum" />
+      <BookingTotal :totalSum="totalSum" @book="handle" />
     </div>
   </div>
 </template>
@@ -48,12 +66,14 @@
 <script>
 import BookingPerson from './BookingPerson'
 import BookingTotal from './BookingTotal'
+import Counter from '../common/Counter'
 import Loading from '../common/Loading'
 
 export default {
   components: {
     BookingPerson,
     BookingTotal,
+    Counter,
     Loading
   },
   props: {
@@ -72,8 +92,10 @@ export default {
   },
   data () {
     return {
-      selectedCaregivers: [],
-      selectedKids: []
+      additionalVisible: false,
+      additionalKids: 0,
+      additionalAdults: 0,
+      selectedPersons: []
     }
   },
   computed: {
@@ -83,27 +105,27 @@ export default {
     kids () {
       return this.members.filter(member => member.isChild)
     },
-    totalPersons () {
-      return this.selectedCaregivers.length + this.selectedKids.length
+    newPersons () {
+      return this.members.filter(member => member.isNew)
     },
     totalSum () {
-      return this.totalPersons * this.item.price
+      return this.item.price * (this.selectedPersons.length + this.additionalKids + this.additionalAdults)
     }
   },
   methods: {
-    changeCaregiver (id, active) {
-      if (active) {
-        this.selectedCaregivers.push(id)
-      } else {
-        this.selectedCaregivers = this.selectedCaregivers.filter(personId => personId !== id)
-      }
+    addPerson (type) {
+      this.members.push({
+        isNew: true,
+        isChild: type === 'kid' ? 1 : 0,
+        fullName: ''
+      })
     },
-    changeKid (id, active) {
-      if (active) {
-        this.selectedKids.push(id)
-      } else {
-        this.selectedKids = this.selectedKids.filter(personId => personId !== id)
-      }
+    changePerson (person) {
+      if (person.isActive) return this.selectedPersons.push(person)
+      this.selectedPersons = this.selectedPersons.filter(pers => pers.i !== person.i)
+    },
+    handle () {
+      this.$emit('newPersons', this.newPersons)
     }
   }
 }
@@ -183,18 +205,6 @@ export default {
   }
 }
 
-.add {
-  color: #D9429F;
-  font-size: 14px;
-}
-
-.add-attendee {
-  color: #918A8C;
-  display: flex;
-  font-size: 11px;
-  justify-content: flex-end;
-}
-
 @include mobile {
   .header {
     display: none;
@@ -231,6 +241,43 @@ export default {
 
   .add-attendee {
     padding-right: 20px;
+  }
+}
+
+.add {
+  color: #D9429F;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+.add-attendee {
+  color: #918A8C;
+  cursor: pointer;
+  display: flex;
+  font-size: 12px;
+  justify-content: flex-end;
+  padding: 0;
+  text-decoration: underline;
+  user-select: none;
+}
+
+.additional {
+  align-items: center;
+  color: #918A8C;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  margin: 7px 0 7px 0;
+
+  div:last-child {
+    align-items: center;
+    display: flex;
+
+    span {
+      width: 50px;
+      text-align: right;
+    }
   }
 }
 </style>

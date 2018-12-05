@@ -2,11 +2,12 @@
   <div class="booking-item">
     <img class="image" :src="iconSrc">
     <div class="name">
-      <div>{{ person.fullName }}</div>
-      <div>{{ isChild ? 'Kid' : 'Caregiver' }}</div>
+      <input placeholder="Enter Full Name" type="text" v-if="person.isNew" v-model="person.fullName" @input="handle">
+      <div v-else>{{ person.fullName }}</div>
+      <div>{{ person.isChild ? 'Kid' : 'Caregiver' }}</div>
     </div>
     <div class="controls">
-      <Switcher v-model="isActive" @input="handle" />
+      <Switcher v-model="person.isActive" @input="handle" />
       <div class="price">${{ price }}</div>
     </div>
   </div>
@@ -29,22 +30,17 @@ export default {
       type: Number
     }
   },
-  data () {
-    return {
-      isActive: false
-    }
-  },
   computed: {
     iconSrc () {
       return this.person.photoLink || require(`@/assets/images/user-gray.svg`)
-    },
-    isChild () {
-      return this.person.isChild
     }
+  },
+  created () {
+    this.person.isActive = false
   },
   methods: {
     handle () {
-      this.$emit('changePerson', this.person.id, this.isActive)
+      this.$emit('changePerson', this.person, this.index)
     }
   }
 }
@@ -69,6 +65,15 @@ export default {
 .name {
   flex: 1;
   line-height: 22px;
+
+  input {
+    border: 0;
+    border-bottom: 1px solid #D4D4D4;
+    color: #4F4F4F;
+    font: inherit;
+    margin-bottom: 4px;
+    padding: 5px 0 5px 0;
+  }
 
   div:first-child {
     color: #463A3E;

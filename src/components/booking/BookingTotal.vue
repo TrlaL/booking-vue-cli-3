@@ -13,7 +13,7 @@
       </div>
     </div>
     <Checkbox class="checkbox" v-model="checkbox">Save credit card for future bookings</Checkbox>
-    <button class="button">Book</button>
+    <button class="button" @click="$emit('book')">Book</button>
   </div>
 </template>
 
@@ -43,12 +43,13 @@ export default {
   .booking-total {
     background: #eee;
     border-top: 1px solid #ddd;
+    margin-top: 10px !important;
     padding: 20px;
   }
 }
 
 .booking-total {
-  margin-top: 40px;
+  margin-top: 30px;
 }
 
 .line {
