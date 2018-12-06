@@ -5,21 +5,11 @@
     <div class="form">
       <div class="card">
         <label>Credit Card Number</label>
-        <input
-          name="number"
-          placeholder="************1234"
-          type="text"
-          v-validate="'required|min:16'"
-        >
+        <input name="number" placeholder="************1234" type="text" v-validate="'required|min:16'">
       </div>
       <div class="date">
         <label>Exp. Date</label>
-        <input
-          name="expireDate"
-          placeholder="MM/YYYY"
-          type="text"
-          v-validate="'required|date_format:MM/YYYY'"
-        >
+        <input name="expireDate" placeholder="MM/YYYY" type="text" v-validate="'required|date_format:MM/YYYY'">
       </div>
     </div>
     <Checkbox class="checkbox" v-model="checkbox">Save credit card for future bookings</Checkbox>

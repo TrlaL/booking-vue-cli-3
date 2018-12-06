@@ -4,43 +4,19 @@
     <div class="forms">
       <div>
         <label>Full Name</label>
-        <input
-          name="fullName"
-          placeholder="Enter full name"
-          type="text"
-          v-validate="'required|min:1'"
-          v-model="settings.fullName"
-        >
+        <input name="fullName" placeholder="Enter full name" type="text" v-validate="'required|min:1'" v-model="settings.fullName">
       </div>
       <div>
         <label>Email</label>
-          <input
-            name="email"
-            placeholder="example@gmail.com"
-            type="text"
-            v-validate="'required|email'"
-            v-model="settings.email"
-          >
+          <input name="email" placeholder="example@gmail.com" type="text" v-validate="'required|email'" v-model="settings.email">
       </div>
       <div>
         <label>Password</label>
-          <input
-            name="password"
-            placeholder="********"
-            type="text"
-            v-validate="'min:5'"
-            v-model="settings.password"
-          >
+          <input name="password" placeholder="********" type="text" v-validate="'min:5'" v-model="settings.password">
       </div>
       <div>
         <label>Phone</label>
-          <input
-            name="phone"
-            placeholder="111-222-3333"
-            type="text"
-            v-validate="'required|min:1|max:50'"
-            v-model="settings.phone"
-          >
+          <input name="phone" placeholder="111-222-3333" type="text" v-validate="'required|min:1|max:50'" v-model="settings.phone">
       </div>
     </div>
     <div class="buttons">
@@ -138,10 +114,6 @@ export default {
  .account-person {
     border-bottom: 1px solid #ddd;
     padding: 20px;
-
-    &:last-child {
-      border-bottom: 0;
-    }
   }
 
   .icon {
@@ -187,13 +159,8 @@ export default {
       cursor: pointer;
       font: inherit;
       flex: 1;
-      margin-right: 10px;
       padding: 8px 0 8px 0;
       width: 90px;
-
-      &:last-child {
-        margin: 0;
-      }
     }
   }
 }
