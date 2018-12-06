@@ -5,15 +5,25 @@
     <div class="form">
       <div class="card">
         <label>Credit Card Number</label>
-        <input type="text" value="*********1234">
+        <input
+          name="number"
+          placeholder="************1234"
+          type="text"
+          v-validate="'required|min:16'"
+        >
       </div>
       <div class="date">
         <label>Exp. Date</label>
-        <input type="text" value="MM/YYYY">
+        <input
+          name="expireDate"
+          placeholder="MM/YYYY"
+          type="text"
+          v-validate="'required|date_format:MM/YYYY'"
+        >
       </div>
     </div>
     <Checkbox class="checkbox" v-model="checkbox">Save credit card for future bookings</Checkbox>
-    <button class="button" @click="$emit('book')">Book</button>
+    <button class="button" @click="handle">Book</button>
   </div>
 </template>
 
@@ -28,6 +38,14 @@ export default {
   data () {
     return {
       checkbox: false
+    }
+  },
+  methods: {
+    handle () {
+      this.$validator.validateAll().then(checked => {
+        if (checked) return this.$emit('book')
+        this.$emit('handleError', 'You entered incorrect data!')
+      })
     }
   }
 }
@@ -74,7 +92,7 @@ export default {
   }
 
   label {
-    color: #A1A1A1;
+    color: #888;
     font-size: 15px;
   }
 
@@ -82,8 +100,12 @@ export default {
     border: 0;
     border-bottom: 1px solid #D4D4D4;
     box-sizing: border-box;
-    padding: 10px;
+    padding: 7px 0 7px 0;
     width: 100%;
+
+    &::placeholder {
+      color: #aaa;
+    }
   }
 }
 

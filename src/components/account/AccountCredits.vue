@@ -1,7 +1,7 @@
 <template>
   <div class="account-credits">
     <img class="icon" src="@/assets/images/credits.svg">
-    <div class="forms">
+    <div class="credits">
       <div v-if="!settings.money">Currently, no credits available</div>
       <div v-else>You have {{ settings.money }} credits</div>
     </div>
@@ -25,47 +25,47 @@ export default {
     align-items: center;
     display: flex;
     margin-bottom: 25px;
+  }
 
-    .icon {
-      height: 60px;
-      margin-right: 50px;
-      object-fit: contain;
-      width: 60px;
-    }
+  .icon {
+    height: 60px;
+    margin-right: 50px;
+    object-fit: contain;
+    width: 60px;
+  }
 
-    .forms {
+  .credits {
+    display: flex;
+    flex: 1;
+
+    div {
       display: flex;
-      flex: 1;
+      flex-direction: column;
+      margin-right: 15px;
 
-      div {
-        display: flex;
-        flex-direction: column;
-        margin-right: 15px;
-
-        &:last-child {
-          margin: 0;
-        }
+      &:last-child {
+        margin: 0;
       }
     }
+  }
 
-    .buttons {
-      align-items: center;
-      display: flex;
-      justify-content: space-between;
-      margin-left: 50px;
-      width: 120px;
+  .buttons {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 50px;
+    width: 120px;
 
-      button {
-        background: #E1519F;
-        border: 0;
-        border-radius: 5px;
-        color: #fff;
-        cursor: pointer;
-        font: inherit;
-        flex-shrink: 0;
-        padding: 8px 0 8px 0;
-        width: 90px;
-      }
+    button {
+      background: #E1519F;
+      border: 0;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+      font: inherit;
+      flex-shrink: 0;
+      padding: 8px 0 8px 0;
+      width: 90px;
     }
   }
 }
@@ -78,39 +78,39 @@ export default {
     &:last-child {
       border-bottom: 0;
     }
+  }
 
-    .icon {
-      display: none;
-    }
+  .icon {
+    display: none;
+  }
 
-    .forms {
-      margin-bottom: 10px;
+  .credits {
+    margin-bottom: 10px;
 
-      div {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 20px;
-      }
-    }
-
-    .buttons {
+    div {
       display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+  }
 
-      button {
-        background: #E1519F;
-        border: 2px solid #E1519F;
-        border-radius: 5px;
-        color: #fff;
-        cursor: pointer;
-        font: inherit;
-        flex: 1;
-        margin-right: 10px;
-        padding: 8px 0 8px 0;
-        width: 90px;
+  .buttons {
+    display: flex;
 
-        &:last-child {
-          margin: 0;
-        }
+    button {
+      background: #E1519F;
+      border: 2px solid #E1519F;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+      font: inherit;
+      flex: 1;
+      margin-right: 10px;
+      padding: 8px 0 8px 0;
+      width: 90px;
+
+      &:last-child {
+        margin: 0;
       }
     }
   }

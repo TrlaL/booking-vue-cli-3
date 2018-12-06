@@ -50,6 +50,8 @@ export default {
   border-radius: 100%;
   margin-right: 15px;
   height: 60px;
+  min-height: 60px;
+  min-width: 60px;
   object-fit: contain;
   width: 60px;
 }
@@ -57,14 +59,15 @@ export default {
 .name {
   flex: 1;
   line-height: 22px;
+  padding-right: 20px;
 
   input {
     border: 0;
     border-bottom: 1px solid #D4D4D4;
     color: #4F4F4F;
     font: inherit;
-    margin-bottom: 4px;
     padding: 5px 0 5px 0;
+    width: 100%;
   }
 
   div:first-child {

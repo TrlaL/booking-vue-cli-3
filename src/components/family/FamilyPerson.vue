@@ -1,6 +1,5 @@
 <template>
   <div class="family-person">
-    <Modal class="modal" id="family-person">You entered incorrect data!</Modal>
     <img class="icon" :src="require(`@/assets/images/${icon}`)">
     <div class="forms">
       <div>
@@ -57,10 +56,7 @@
 </template>
 
 <script>
-import Modal from '../common/Modal'
-
 export default {
-  components: { Modal },
   props: {
     data: { required: true, type: Object },
     person: { required: true, type: String }
@@ -82,11 +78,8 @@ export default {
     },
     savePerson (person, data) {
       this.$validator.validateAll().then(checked => {
-        if (checked) {
-          this.$emit('savePerson', person, data)
-        } else {
-          this.$store.commit('SET_MODAL_VISIBLE', { id: 'family-person', visible: true })
-        }
+        if (checked) return this.$emit('savePerson', person, data)
+        this.$emit('handleError', 'You entered incorrect data!')
       })
     }
   }

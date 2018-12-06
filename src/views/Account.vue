@@ -1,48 +1,82 @@
 <template>
   <div class="container">
-    <Modal id="account" class="modal">{{ message }}</Modal>
+    <AccountModal />
+    <Modal class="modal-message" id="account">{{ message }}</Modal>
     <Navigation />
-    <AccountMain
-      :cards="cards"
-      :credits="credits"
-      :loaded="loaded"
-      :settings="settings"
-      @addCard="addCard"
-      @addCredit="addCredit"
-      @createCard="createCard"
-      @deleteCard="deleteCard"
-      @saveUserSettings="saveUserSettings"
-      @updateCard="updateCard"
-      @updated="update"
-    />
+    <div class="box">
+      <div class="section">
+        <div class="title">
+          <img class="title-icon" src="@/assets/images/user-black.svg">
+          My account
+        </div>
+        <AccountPerson
+          v-if="isSettingsLoaded"
+          :settings="settings"
+          @handleError="showModal"
+          @saveUserSettings="saveUserSettings"
+        />
+        <Loading v-else />
+      </div>
+      <div class="section">
+        <div class="title">
+          <img class="title-icon" src="@/assets/images/payment.svg">
+          My payment method
+        </div>
+        <div class="cards" v-if="isCardsLoaded">
+          <AccountCard
+            v-for="(card, i) in cards"
+            :card="card"
+            :key="i"
+            @deleteCard="deleteCard"
+            @handleCard="handleCard"
+            @handleError="showModal"
+          />
+          <div class="empty" v-show="!cards.length">You have not added cards yet.</div>
+          <div class="add">
+            <a @click="addCard">+ Add Card</a>
+          </div>
+        </div>
+        <Loading v-else />
+      </div>
+      <div class="section">
+        <div class="title">
+          <img class="title-icon" src="@/assets/images/credits.svg">
+          GoBambino Credits
+        </div>
+        <AccountCredits :settings="settings" @addCredit="addCredit" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import AccountMain from '@/components/account/AccountMain'
+import AccountCard from '@/components/account/AccountCard'
+import AccountCredits from '@/components/account/AccountCredits'
+import AccountModal from '@/components/account/AccountModal'
+import AccountPerson from '@/components/account/AccountPerson'
+import Loading from '@/components/common/Loading'
 import Modal from '@/components/common/Modal'
 import Navigation from '@/components/common/Navigation'
 import { loadUserSettings, saveUserSettings } from '@/api/profile'
 import { getCards, createCard, deleteCard, updateCard } from '@/api/cards'
 
 export default {
-  components: { AccountMain, Modal, Navigation },
+  components: {
+    AccountCard,
+    AccountCredits,
+    AccountModal,
+    AccountPerson,
+    Loading,
+    Modal,
+    Navigation
+  },
   data () {
     return {
       cards: [],
-      credits: [],
       isCardsLoaded: false,
       isSettingsLoaded: false,
       message: '',
       settings: {}
-    }
-  },
-  computed: {
-    loaded () {
-      return {
-        isCardsLoaded: this.isCardsLoaded,
-        isSettingsLoaded: this.isSettingsLoaded
-      }
     }
   },
   created () {
@@ -72,16 +106,6 @@ export default {
       this.showModal('Card was deleted successfully')
       this.getCards()
     },
-    async updateCard (data) {
-      let response = await updateCard(data.id, {
-        number: data.number,
-        expireDate: data.expireDate
-      })
-      if (response.data.success) {
-        this.showModal('Card was updated successfully')
-        this.getCards()
-      }
-    },
     async loadUserSettings () {
       let response = await loadUserSettings()
       if (response.data.result) {
@@ -94,10 +118,21 @@ export default {
         id: data.id,
         fullName: data.fullName,
         phone: data.phone,
-        email: data.email
+        email: data.email,
+        ...(data.password && { password: data.password })
       })
       if (response.data.result) {
         this.showModal('Data has been saved')
+      }
+    },
+    async updateCard (data) {
+      let response = await updateCard(data.id, {
+        number: data.number,
+        expireDate: data.expireDate
+      })
+      if (response.data.success) {
+        this.showModal('Card was updated successfully')
+        this.getCards()
       }
     },
     addCard () {
@@ -109,9 +144,14 @@ export default {
       })
     },
     addCredit () {
-      this.credits.push({
-        code: ''
-      })
+      this.$store.commit('SET_MODAL_VISIBLE', { id: 'account-modal', visible: true })
+    },
+    handleCard (card) {
+      if (card.isNew) {
+        this.createCard(card)
+      } else {
+        this.updateCard(card)
+      }
     },
     showModal (message) {
       this.message = message
@@ -125,8 +165,104 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal {
+.modal-message {
   font-size: 18px;
   text-align: center;
+}
+
+@include desktop {
+  .box {
+    padding: 35px 0 35px 0;
+  }
+
+  .section {
+    color: #4F4F4F;
+    margin: auto;
+    margin-bottom: 25px;
+    max-width: 70%;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .title {
+    color: #E1519F;
+    font-size: 15px;
+    margin-bottom: 15px;
+
+    &::after {
+      content: ':';
+    }
+
+    .title-icon {
+      display: none;
+    }
+  }
+
+  .add {
+    display: flex;
+    justify-content: flex-end;
+
+    a {
+      cursor: pointer;
+      color: #D9429F;
+      display: block;
+      font-size: 14px;
+      width: 120px;
+    }
+  }
+}
+
+@include mobile {
+  .box {
+    background: #eee;
+    box-shadow: none;
+    margin: 0;
+  }
+
+  .empty {
+    margin: 20px;
+  }
+
+  .section {
+    background: #fff;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3);
+    margin-bottom: 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .title {
+    align-items: center;
+    background: #eee;
+    border-top: 1px solid #ddd;
+    color: #E1519F;
+    display: flex;
+    font-size: 18px;
+    padding: 10px 20px 10px 20px;
+
+    .title-icon {
+      display: block;
+      height: 30px;
+      margin-right: 5px;
+      object-fit: contain;
+      width: 30px;
+    }
+  }
+
+  .add {
+    background: #eee;
+    color: #E1519F;
+    cursor: pointer;
+    text-align: center;
+
+    a {
+      display: block;
+      padding: 10px;
+    }
+  }
 }
 </style>

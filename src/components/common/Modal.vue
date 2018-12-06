@@ -42,6 +42,11 @@ export default {
     setModalVisible (visible) {
       this.$store.commit('SET_MODAL_VISIBLE', { id: this.id, visible })
     }
+  },
+  watch: {
+    modalVisible (value) {
+      this.$emit('changedVisible', value)
+    }
   }
 }
 </script>
