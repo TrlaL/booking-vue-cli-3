@@ -22,20 +22,22 @@
           <img class="title-icon" src="@/assets/images/payment.svg">
           My payment method
         </div>
-        <div class="cards" v-if="isCardsLoaded">
-          <AccountCard
-            v-for="(card, i) in cards"
-            :card="card"
-            :key="i"
-            @deleteCard="deleteCard"
-            @handleCard="handleCard"
-            @handleError="showModal"
-          />
+        <template v-if="isCardsLoaded">
+          <div class="cards">
+            <AccountCard
+              v-for="(card, i) in cards"
+              :card="card"
+              :key="i"
+              @deleteCard="deleteCard"
+              @handleCard="handleCard"
+              @handleError="showModal"
+            />
+          </div>
           <div class="empty" v-show="!cards.length">You have not added cards yet.</div>
           <div class="add">
             <a @click="addCard">+ Add Card</a>
           </div>
-        </div>
+        </template>
         <Loading v-else />
       </div>
       <div class="section">
@@ -255,6 +257,7 @@ export default {
 
   .add {
     background: #eee;
+    border-top: 1px solid #ddd;
     color: #E1519F;
     cursor: pointer;
     text-align: center;
