@@ -4,19 +4,43 @@
     <div class="forms">
       <div>
         <label>Full Name</label>
-        <input name="fullName" placeholder="Enter full name" type="text" v-validate="'required|min:1'" v-model="settings.fullName">
+        <input
+          name="fullName"
+          placeholder="Enter full name"
+          type="text"
+          v-validate="'required|min:1'"
+          v-model="settings.fullName"
+        >
       </div>
       <div>
         <label>Email</label>
-          <input name="email" placeholder="example@gmail.com" type="text" v-validate="'required|email'" v-model="settings.email">
+          <input
+            name="email"
+            placeholder="example@gmail.com"
+            type="text"
+            v-validate="'required|email'"
+            v-model="settings.email"
+          >
       </div>
       <div>
         <label>Password</label>
-          <input name="password" placeholder="********" type="text" v-validate="'min:5'" v-model="settings.password">
+          <input
+            name="password"
+            placeholder="********"
+            type="text"
+            v-validate="'min:5'"
+            v-model="settings.password"
+          >
       </div>
       <div>
         <label>Phone</label>
-          <input name="phone" placeholder="111-222-3333" type="text" v-validate="'required|min:1|max:50'" v-model="settings.phone">
+          <input
+            name="phone"
+            placeholder="111-222-3333"
+            type="text"
+            v-validate="'required|min:1|max:50'"
+            v-model="settings.phone"
+          >
       </div>
     </div>
     <div class="buttons">

@@ -4,7 +4,7 @@
     <div class="box">
       <ActivitiesTypes @changeType="changeActivityType" />
       <ActivitiesList :items="items" />
-      <Loading v-show="!isLoadedItems" />
+      <Loading class="loading" v-show="!isLoadedItems" />
       <div class="pagination" v-show="paginationVisible">
         <button @click="getNextPage">Next Page</button>
       </div>
@@ -47,6 +47,15 @@ export default {
       return this.$route.name
     }
   },
+  watch: {
+    type (value) {
+      this.items = []
+      this.page = 1
+      this.activityTypeId = 1
+      this.setPageType(value)
+      this.getActivities({ activityTypeId: this.activityTypeId })
+    }
+  },
   created () {
     this.setPageType(this.type)
     this.getActivities({ activityTypeId: this.activityTypeId })
@@ -78,32 +87,31 @@ export default {
       switch (type) {
         case 'favorites':
           this.api = getFavorites
-          this.title = 'FAVORITES'
           break
         case 'going':
           this.api = getCurrentActivities
-          this.title = 'I`M GOING'
           break
         case 'past-booked':
           this.api = getPastActivities
-          this.title = 'PAST BOOKED'
           break
       }
-    }
-  },
-  watch: {
-    type (value) {
-      this.items = []
-      this.page = 1
-      this.activityTypeId = 1
-      this.setPageType(value)
-      this.getActivities({ activityTypeId: this.activityTypeId })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.pagination {
+  padding: 10px;
+  text-align: center;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
 @include mobile {
   .container,
   .box {
@@ -111,8 +119,4 @@ export default {
   }
 }
 
-.pagination {
-  padding: 10px;
-  text-align: center;
-}
 </style>

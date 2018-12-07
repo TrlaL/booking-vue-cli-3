@@ -7,7 +7,7 @@
       <div class="section">
         <div class="title">
           <img class="title-icon" src="@/assets/images/user-black.svg">
-          My account
+          My Account
         </div>
         <AccountPerson
           v-if="isSettingsLoaded"
@@ -15,12 +15,12 @@
           @handleError="showModal"
           @saveUserSettings="saveUserSettings"
         />
-        <Loading v-else />
+        <Loading class="loading" v-else />
       </div>
       <div class="section">
         <div class="title">
           <img class="title-icon" src="@/assets/images/payment.svg">
-          My payment method
+          My Payment Method
         </div>
         <template v-if="isCardsLoaded">
           <div class="cards">
@@ -38,7 +38,7 @@
             <a @click="addCard">+ Add Card</a>
           </div>
         </template>
-        <Loading v-else />
+        <Loading class="loading" v-else />
       </div>
       <div class="section">
         <div class="title">
@@ -94,10 +94,7 @@ export default {
       }
     },
     async createCard (data) {
-      let response = await createCard({
-        number: data.number,
-        expireDate: data.expireDate
-      })
+      let response = await createCard(data)
       if (response.data.success) {
         this.showModal('Data has been saved')
         this.getCards()
@@ -128,10 +125,7 @@ export default {
       }
     },
     async updateCard (data) {
-      let response = await updateCard(data.id, {
-        number: data.number,
-        expireDate: data.expireDate
-      })
+      let response = await updateCard(data.id, data)
       if (response.data.success) {
         this.showModal('Card was updated successfully')
         this.getCards()
@@ -170,6 +164,12 @@ export default {
 .modal-message {
   font-size: 18px;
   text-align: center;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
 }
 
 @include desktop {

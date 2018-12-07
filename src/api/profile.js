@@ -7,7 +7,16 @@ export function loadUserSettings () {
 }
 
 export function saveUserSettings (data) {
-  return instance.put('/profile/save', data)
+  return instance.put('/profile/save', {
+    email: data.email,
+    fullName: data.fullName,
+    password: data.password,
+    phone: data.phone
+  })
+}
+
+export function getClientToken () {
+  return instance.get('/profile/client-token')
 }
 
 export function getFamilyMembers () {
@@ -15,11 +24,20 @@ export function getFamilyMembers () {
 }
 
 export function saveAdult (data) {
-  return instance.put('/profile/save-adult', data)
+  return instance.put('/profile/save-adult', {
+    id: data.id,
+    email: data.email,
+    fullName: data.fullName,
+    phone: data.phone
+  })
 }
 
 export function saveChild (data) {
-  return instance.put('/profile/save-child', data)
+  return instance.put('/profile/save-child', {
+    id: data.id,
+    fullName: data.fullName,
+    birthDate: data.birthDate
+  })
 }
 
 export function deleteFamilyMember (id) {

@@ -1,14 +1,26 @@
 <template>
   <div class="loading">
-    <img src="@/assets/images/loading.gif">
+    <img :src="require(`@/assets/images/${image}`)">
   </div>
 </template>
 
-<style lang="scss" scoped>
-.loading {
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  padding: 10px;
+<script>
+export default {
+  props: {
+    size: { default: 'big', type: String }
+  },
+  data () {
+    return {
+      images: {
+        small: 'loading-small.gif',
+        big: 'loading-big.gif'
+      }
+    }
+  },
+  computed: {
+    image () {
+      return this.images[this.size]
+    }
+  }
 }
-</style>
+</script>

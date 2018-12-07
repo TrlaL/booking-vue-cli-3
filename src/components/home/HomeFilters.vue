@@ -144,6 +144,19 @@ export default {
       }
     }
   },
+  watch: {
+    categories (array) {
+      this.filters.categories = array
+    },
+    isFiltersOpened (value) {
+      if (!value) return
+      let timer = setTimeout(() => {
+        this.$refs.timeSlider.refresh()
+        this.$refs.priceSlider.refresh()
+        clearTimeout(timer)
+      }, 100)
+    }
+  },
   created () {
     this.getCities(this.regionId)
     this.getDistricts(this.regionId)
@@ -227,19 +240,6 @@ export default {
     setTime () {
       this.filters.timeStartFrom = this.translateHour(this.time[0])
       this.filters.timeStartTo = this.translateHour(this.time[1])
-    }
-  },
-  watch: {
-    categories (array) {
-      this.filters.categories = array
-    },
-    isFiltersOpened (value) {
-      if (!value) return
-      let timer = setTimeout(() => {
-        this.$refs.timeSlider.refresh()
-        this.$refs.priceSlider.refresh()
-        clearTimeout(timer)
-      }, 100)
     }
   }
 }

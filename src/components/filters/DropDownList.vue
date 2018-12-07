@@ -50,17 +50,17 @@ export default {
       return this.id === this.openedId
     }
   },
-  methods: {
-    toggle () {
-      this.$store.commit('SET_OPENED_DROP_DOWN_ID', this.id === this.openedId ? null : this.id)
-    }
-  },
   watch: {
     selectedItems (items) {
       this.$emit('changed', items)
     },
     toggler (value) {
       this.selectedItems = (value) ? this.items : []
+    }
+  },
+  methods: {
+    toggle () {
+      this.$store.commit('SET_OPENED_DROP_DOWN_ID', this.id === this.openedId ? null : this.id)
     }
   }
 }

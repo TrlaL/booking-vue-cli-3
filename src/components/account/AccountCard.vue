@@ -4,11 +4,33 @@
     <div class="forms">
       <div>
         <label>Credit Card Number</label>
-        <input name="number" placeholder="************1234" type="text" v-validate="'required|min:16'" v-model="card.number">
+        <input
+          name="number"
+          placeholder="************1234"
+          type="text"
+          v-validate="'required|min:16'"
+          v-model="card.number"
+        >
       </div>
       <div>
         <label>Experation Date</label>
-        <input name="expireDate" placeholder="MM/YYYY" type="text" v-validate="'required|date_format:MM/YYYY'" v-model="card.expireDate">
+        <input
+          name="expireDate"
+          placeholder="MM/YYYY"
+          type="text"
+          v-validate="'required|date_format:MM/YYYY'"
+          v-model="card.expireDate"
+        >
+      </div>
+      <div>
+        <label>CVV</label>
+        <input
+          name="cvv"
+          placeholder="123"
+          type="text"
+          v-validate="'required|numeric|min:3|max:4'"
+          v-model="card.cvv"
+        >
       </div>
     </div>
     <div class="buttons">

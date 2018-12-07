@@ -3,7 +3,7 @@
     <HomeControls />
     <ActivitiesTypes @changeType="changeActivityType" />
     <ActivitiesList :items="items" />
-    <Loading v-show="!isLoadedItems" />
+    <Loading class="loading" v-show="!isLoadedItems" />
     <div class="pagination" v-show="paginationVisible">
       <a @click="getNextPage">Next Page</a>
     </div>
@@ -43,6 +43,21 @@ export default {
     },
     searchQuery () {
       return this.$store.getters.searchQuery
+    }
+  },
+  watch: {
+    filters (filters) {
+      this.items = []
+      this.page = 1
+      this.getActivities({
+        filters: {
+          activityTypeId: this.activityTypeId,
+          ...filters
+        }
+      }, this.searchQuery)
+    },
+    searchQuery (query) {
+      this.search(query)
     }
   },
   created () {
@@ -93,33 +108,11 @@ export default {
         }
       }, this.searchQuery)
     }
-  },
-  watch: {
-    filters (filters) {
-      this.items = []
-      this.page = 1
-      this.getActivities({
-        filters: {
-          activityTypeId: this.activityTypeId,
-          ...filters
-        }
-      }, this.searchQuery)
-    },
-    searchQuery (query) {
-      this.search(query)
-    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@include mobile {
-  .container,
-  .box {
-    all: unset;
-  }
-}
-
 .pagination {
   cursor: pointer;
   font-size: 14px;
@@ -127,4 +120,18 @@ export default {
   text-align: center;
   text-decoration: underline;
 }
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+@include mobile {
+  .container,
+  .box {
+    all: unset;
+  }
+}
+
 </style>

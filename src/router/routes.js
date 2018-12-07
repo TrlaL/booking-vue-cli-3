@@ -3,6 +3,7 @@ import Activities from '@/views/Activities'
 import Booking from '@/views/Booking'
 import Family from '@/views/Family'
 import Home from '@/views/Home'
+import NotFound from '@/views/NotFound'
 
 export default [
   {
@@ -46,5 +47,11 @@ export default [
     name: 'family',
     meta: { title: 'MY FAMILY' },
     component: Family
+  },
+  {
+    path: '/not-found',
+    name: 'not-found',
+    meta: { title: 'NOT FOUND' },
+    component: NotFound
   }
 ]

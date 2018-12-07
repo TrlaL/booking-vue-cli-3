@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div class="modal" v-if="modalVisible">
-      <div class="blackout"></div>
+      <div class="blackout" @click="setModalVisible(false)"></div>
       <div class="box">
         <div class="close" @click="handleButton(false)">
           <img class="close" src="@/assets/images/close.svg">
@@ -31,6 +31,11 @@ export default {
       return this.$store.getters.modalVisible(this.id)
     }
   },
+  watch: {
+    modalVisible (value) {
+      this.$emit('changedVisible', value)
+    }
+  },
   created () {
     this.$store.commit('SET_MODAL_VISIBLE', { id: this.id, visible: false })
   },
@@ -41,11 +46,6 @@ export default {
     },
     setModalVisible (visible) {
       this.$store.commit('SET_MODAL_VISIBLE', { id: this.id, visible })
-    }
-  },
-  watch: {
-    modalVisible (value) {
-      this.$emit('changedVisible', value)
     }
   }
 }
@@ -65,7 +65,8 @@ export default {
 }
 
 .blackout {
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
   height: 100%;
   position: absolute;
   width: 100%;

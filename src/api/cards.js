@@ -7,11 +7,19 @@ export function getCards () {
 }
 
 export function createCard (data) {
-  return instance.post('/cards/create', data)
+  return instance.post('/cards/create', {
+    number: data.number,
+    expireDate: data.expireDate,
+    cvv: data.cvv
+  })
 }
 
 export function updateCard (id, data) {
-  return instance.put(`/cards/update?id=${id}`, data)
+  return instance.put(`/cards/update?id=${id}`, {
+    number: data.number,
+    expireDate: data.expireDate,
+    cvv: data.cvv
+  })
 }
 
 export function deleteCard (id) {
