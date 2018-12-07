@@ -4,7 +4,7 @@
     <div class="box">
       <ActivitiesTypes @changeType="changeActivityType" />
       <ActivitiesList :items="items" />
-      <Loading v-show="!isLoadedItems" />
+      <Loading class="loading" v-show="!isLoadedItems" />
       <div class="pagination" v-show="paginationVisible">
         <button @click="getNextPage">Next Page</button>
       </div>
@@ -104,6 +104,17 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.pagination {
+  padding: 10px;
+  text-align: center;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
 @include mobile {
   .container,
   .box {
@@ -111,8 +122,4 @@ export default {
   }
 }
 
-.pagination {
-  padding: 10px;
-  text-align: center;
-}
 </style>

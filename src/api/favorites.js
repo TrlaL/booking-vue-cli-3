@@ -5,7 +5,7 @@ setAuthToken(token)
 export function getFavorites (params = {}) {
   return instance.get('/favorites/list', {
     params: {
-      activityId: params.activityId,
+      activityTypeId: params.activityTypeId,
       ipp: params.ipp,
       page: params.page
     }

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Modal id="family" class="modal">{{ message }}</Modal>
+    <Modal id="family" class="modal-message">{{ message }}</Modal>
     <Navigation />
     <div class="box">
       <div class="section">
@@ -19,7 +19,7 @@
             @savePerson="savePerson"
           />
         </div>
-        <Loading v-else />
+        <Loading class="loading" v-else />
         <div class="empty" v-show="isLoaded && !kids.length">You have not added children yet.</div>
         <div class="add" v-show="isLoaded">
           <a @click="addPerson('kid')">+ Add Kid</a>
@@ -41,7 +41,7 @@
             @savePerson="savePerson"
           />
         </div>
-        <Loading v-else />
+        <Loading class="loading" v-else />
         <div class="empty" v-show="isLoaded && !caregivers.length">You have not added caregivers yet.</div>
         <div class="add" v-show="isLoaded">
           <a @click="addPerson('caregiver')">+ Add Caregiver</a>
@@ -148,9 +148,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.modal {
+.modal-message {
   font-size: 18px;
   text-align: center;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
 }
 
 @include desktop {

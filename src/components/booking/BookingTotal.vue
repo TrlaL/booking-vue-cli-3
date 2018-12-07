@@ -26,6 +26,9 @@
       <div class="cvv" v-if="false">
         <input
           name="cvv"
+          placeholder="123"
+          type="text"
+          v-validate="'required|numeric|min:3|max:4'"
           v-model="card.cvv"
         >
       </div>

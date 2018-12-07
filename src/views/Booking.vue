@@ -28,7 +28,7 @@
               <a @click="addPerson('kid')">+ Add Kid Profile</a>
             </div>
           </div>
-          <Loading v-else />
+          <Loading class="loading" v-else />
         </div>
         <div class="block">
           <div class="title">CAREGIVERS/ADULTS:</div>
@@ -47,10 +47,10 @@
               <a @click="addPerson('caregiver')">+ Add Caregiver Profile</a>
             </div>
           </div>
-          <Loading v-else />
+          <Loading class="loading" v-else />
         </div>
         <div class="block">
-          <a class="add-attendee" @click="toggleAttendees">Add attendee(s) without adding to profile</a>
+          <a class="add-attendee" @click="toggleAttendees" v-if="isLoaded">Add attendee(s) without adding to profile</a>
           <template v-if="additionalVisible">
             <div class="additional">
               <div>Additional kid(s):</div>
@@ -256,6 +256,12 @@ export default {
   text-align: center;
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
 .add {
   color: #D9429F;
   cursor: pointer;
@@ -331,21 +337,22 @@ export default {
     display: flex;
     justify-content: space-between;
     margin-bottom: 35px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     span {
-      align-items: center;
-      display: flex;
+      overflow: hidden;
+      width: 100%;
     }
 
     span:first-child {
-      font-size: 18px;
       font-weight: bold;
+      text-overflow: ellipsis;
     }
 
     span:last-child {
       color: #918A8C;
-      font-size: 16px;
-      font-weight: 400;
+      text-align: right;
     }
   }
 
@@ -381,15 +388,21 @@ export default {
     background: #eee;
     border-top: 1px solid #ddd;
     display: flex;
-    justify-content: space-between;
     padding: 20px;
+
+    span {
+      overflow: hidden;
+      width: 100%;
+    }
 
     span:first-child {
       font-weight: bold;
+      text-overflow: ellipsis;
     }
 
     span:last-child {
-      color: #918A8C;;
+      color: #918A8C;
+      text-align: right;
     }
   }
 
