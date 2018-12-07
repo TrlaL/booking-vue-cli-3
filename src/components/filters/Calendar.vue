@@ -42,6 +42,13 @@ export default {
       return this.monthNames[this.selectedDate.month]
     }
   },
+  watch: {
+    value (val) {
+      if (val !== null) return
+      this.draw()
+      this.val = 0
+    }
+  },
   created () {
     this.currentDate = this.selectedDate = this.getDate()
     this.draw(new Date(2018, 11))
@@ -93,13 +100,6 @@ export default {
       let time = new Date(this.selectedDate.year, this.selectedDate.month, date).getTime()
       this.val = (this.val === time) ? 0 : time
       this.$emit('input', this.val)
-    }
-  },
-  watch: {
-    value (val) {
-      if (val !== null) return
-      this.draw()
-      this.val = 0
     }
   }
 }

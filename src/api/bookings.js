@@ -29,9 +29,17 @@ export function calculateDraft (data) {
 }
 
 export function getCurrentActivities (data) {
-  return instance.put('/bookings/current', data)
+  return instance.put('/bookings/current', {
+    filters: data.filters,
+    pages: data.pages,
+    sorting: data.sorting
+  })
 }
 
 export function getPastActivities (data) {
-  return instance.put('/bookings/past', data)
+  return instance.put('/bookings/past', {
+    filters: data.filters,
+    pages: data.pages,
+    sorting: data.sorting
+  })
 }

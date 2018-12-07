@@ -38,6 +38,12 @@ export default {
       selected: null
     }
   },
+  watch: {
+    value (val) {
+      if (val !== null) return
+      this.selected = null
+    }
+  },
   methods: {
     selectedClass (i) {
       return {
@@ -47,12 +53,6 @@ export default {
     setItem (i) {
       this.selected = (this.selected === i) ? null : i
       this.$emit('input', this.selected !== null ? this.items[i].value : null)
-    }
-  },
-  watch: {
-    value (val) {
-      if (val !== null) return
-      this.selected = null
     }
   }
 }

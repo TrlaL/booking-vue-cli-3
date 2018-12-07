@@ -31,6 +31,11 @@ export default {
       return this.$store.getters.modalVisible(this.id)
     }
   },
+  watch: {
+    modalVisible (value) {
+      this.$emit('changedVisible', value)
+    }
+  },
   created () {
     this.$store.commit('SET_MODAL_VISIBLE', { id: this.id, visible: false })
   },
@@ -41,11 +46,6 @@ export default {
     },
     setModalVisible (visible) {
       this.$store.commit('SET_MODAL_VISIBLE', { id: this.id, visible })
-    }
-  },
-  watch: {
-    modalVisible (value) {
-      this.$emit('changedVisible', value)
     }
   }
 }

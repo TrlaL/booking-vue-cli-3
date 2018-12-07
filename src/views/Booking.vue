@@ -93,7 +93,13 @@ import { getCards } from '@/api/cards'
 import { getClientToken, getFamilyMembers, saveAdult, saveChild } from '@/api/profile'
 
 export default {
-  components: { BookingPerson, BookingTotal, Counter, Loading, Modal },
+  components: {
+    BookingPerson,
+    BookingTotal,
+    Counter,
+    Loading,
+    Modal
+  },
   data () {
     return {
       additionalVisible: false,

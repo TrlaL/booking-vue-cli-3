@@ -52,6 +52,11 @@ export default {
       return this.$route.meta.title
     }
   },
+  watch: {
+    searchQuery (query) {
+      this.query = query
+    }
+  },
   methods: {
     goHome () {
       this.$router.push('/')
@@ -64,11 +69,6 @@ export default {
     },
     toggleFilters () {
       this.$store.commit('SET_FILTERS_OPENED', !this.isFiltersOpened)
-    }
-  },
-  watch: {
-    searchQuery (query) {
-      this.query = query
     }
   }
 }

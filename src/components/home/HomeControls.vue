@@ -32,9 +32,7 @@ export default {
   },
   computed: {
     className () {
-      return {
-        clicked: this.filters
-      }
+      return { clicked: this.filters }
     },
     filtersArrow () {
       return this.filters ? 'arrow-top.svg' : 'arrow-bottom.svg'
@@ -46,6 +44,11 @@ export default {
       return this.$store.getters.searchQuery
     }
   },
+  watch: {
+    searchQuery (query) {
+      this.query = query
+    }
+  },
   methods: {
     reset () {
       this.$store.commit('SET_SEARCH_QUERY', '')
@@ -55,11 +58,6 @@ export default {
     },
     toggleFilters () {
       this.$store.commit('SET_FILTERS_OPENED', !this.isFiltersOpened)
-    }
-  },
-  watch: {
-    searchQuery (query) {
-      this.query = query
     }
   }
 }

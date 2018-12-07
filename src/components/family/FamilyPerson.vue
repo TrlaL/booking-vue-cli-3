@@ -4,20 +4,44 @@
     <div class="forms">
       <div>
         <label>Full Name</label>
-        <input name="fullName" placeholder="Enter full name" type="text" v-validate="'required|min:1|max:200'" v-model="data.fullName">
+        <input
+          name="fullName"
+          placeholder="Enter full name"
+          type="text"
+          v-validate="'required|min:1|max:200'"
+          v-model="data.fullName"
+        >
       </div>
       <div v-if="isKid">
         <label>Date of Birth</label>
-        <input name="birthDate" placeholder="YYYY-MM-DD" type="text" v-validate="'required|date_format:YYYY-MM-DD'" v-model="data.birthDate">
+        <input
+          name="birthDate"
+          placeholder="YYYY-MM-DD"
+          type="text"
+          v-validate="'required|date_format:YYYY-MM-DD'"
+          v-model="data.birthDate"
+        >
       </div>
       <template v-if="isCaregiver">
         <div>
           <label>Email</label>
-          <input name="email" placeholder="example@gmail.com" type="text" v-validate="'required|email'" v-model="data.email">
+          <input
+            name="email"
+            placeholder="example@gmail.com"
+            type="text"
+            v-validate="'required|email'"
+            v-model="data.email"
+          >
         </div>
         <div>
           <label>Phone</label>
-          <input name="phone" placeholder="111-222-3333" type="text" v-validate="'required|min:1|max:50'" v-model="data.phone">
+          <input
+            name="phone"
+            placeholder="111-222-3333"
+            type="text"
+            v-validate="'required|min:1|max:50'"
+            v-model="data.phone"
+          >
         </div>
       </template>
     </div>
@@ -45,7 +69,7 @@ export default {
       return this.person === 'caregiver'
     },
     isKid () {
-      return this.person === 'kid'
+      return !this.isCaregiver
     }
   },
   methods: {

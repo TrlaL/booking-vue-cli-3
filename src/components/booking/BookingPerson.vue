@@ -1,5 +1,5 @@
 <template>
-  <div class="booking-item">
+  <div class="booking-person">
     <img class="image" :src="iconSrc">
     <div class="name">
       <input
@@ -53,7 +53,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.booking-item {
+.booking-person {
   align-items: center;
   display: flex;
   margin-bottom: 20px;

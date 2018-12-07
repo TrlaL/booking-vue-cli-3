@@ -45,6 +45,21 @@ export default {
       return this.$store.getters.searchQuery
     }
   },
+  watch: {
+    filters (filters) {
+      this.items = []
+      this.page = 1
+      this.getActivities({
+        filters: {
+          activityTypeId: this.activityTypeId,
+          ...filters
+        }
+      }, this.searchQuery)
+    },
+    searchQuery (query) {
+      this.search(query)
+    }
+  },
   created () {
     this.getActivities({
       filters: { activityTypeId: this.activityTypeId }
@@ -92,21 +107,6 @@ export default {
           ...this.filters
         }
       }, this.searchQuery)
-    }
-  },
-  watch: {
-    filters (filters) {
-      this.items = []
-      this.page = 1
-      this.getActivities({
-        filters: {
-          activityTypeId: this.activityTypeId,
-          ...filters
-        }
-      }, this.searchQuery)
-    },
-    searchQuery (query) {
-      this.search(query)
     }
   }
 }

@@ -47,6 +47,15 @@ export default {
       return this.$route.name
     }
   },
+  watch: {
+    type (value) {
+      this.items = []
+      this.page = 1
+      this.activityTypeId = 1
+      this.setPageType(value)
+      this.getActivities({ activityTypeId: this.activityTypeId })
+    }
+  },
   created () {
     this.setPageType(this.type)
     this.getActivities({ activityTypeId: this.activityTypeId })
@@ -86,15 +95,6 @@ export default {
           this.api = getPastActivities
           break
       }
-    }
-  },
-  watch: {
-    type (value) {
-      this.items = []
-      this.page = 1
-      this.activityTypeId = 1
-      this.setPageType(value)
-      this.getActivities({ activityTypeId: this.activityTypeId })
     }
   }
 }
