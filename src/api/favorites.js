@@ -3,7 +3,13 @@ import { instance, token, setAuthToken } from './config'
 setAuthToken(token)
 
 export function getFavorites (params = {}) {
-  return instance.get('/favorites/list', { params })
+  return instance.get('/favorites/list', {
+    params: {
+      activityId: params.activityId,
+      ipp: params.ipp,
+      page: params.page
+    }
+  })
 }
 
 export function setFavorite (activityId, activityDate) {

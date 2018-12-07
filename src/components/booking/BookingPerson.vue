@@ -2,13 +2,24 @@
   <div class="booking-item">
     <img class="image" :src="iconSrc">
     <div class="name">
-      <input placeholder="Enter Full Name" type="text" v-if="person.isNew" v-model="person.fullName" @input="handle">
+      <input
+        name="fullName"
+        placeholder="Enter Full Name"
+        type="text"
+        v-validate="'required|min:1'"
+        v-if="person.isNew"
+        v-model="person.fullName"
+        @change="handle"
+      >
       <div v-else>{{ person.fullName }}</div>
       <div>{{ person.isChild ? 'Kid' : 'Caregiver' }}</div>
     </div>
     <div class="controls">
-      <Switcher v-model="person.isActive" @input="handle" />
-      <div class="price">${{ price }}</div>
+      <button class="save" v-if="person.isNew" @click="save">Save</button>
+      <template v-else>
+        <Switcher v-model="person.isActive" @input="handle" />
+        <div class="price">${{ price }}</div>
+      </template>
     </div>
   </div>
 </template>
@@ -27,12 +38,15 @@ export default {
       return this.person.photoLink || require(`@/assets/images/user-gray.svg`)
     }
   },
-  created () {
-    this.person.isActive = false
-  },
   methods: {
     handle () {
-      this.$emit('changePerson', this.person, this.index)
+      this.$emit('changePerson', this.person)
+    },
+    save () {
+      this.$validator.validateAll().then(checked => {
+        if (checked) return this.$emit('savePerson', this.person, this.person.isChild)
+        this.$emit('handleError', 'Enter full name!')
+      })
     }
   }
 }
@@ -68,6 +82,10 @@ export default {
     font: inherit;
     padding: 5px 0 5px 0;
     width: 100%;
+
+    &::placeholder {
+      color: #aaa;
+    }
   }
 
   div:first-child {
@@ -87,5 +105,16 @@ export default {
   font-size: 12px;
   line-height: 20px;
   text-align: center;
+
+  .save {
+    background: #E1519F;
+    border: 0;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+    font-size: 15px;
+    padding: 10px 15px 10px 15px;
+  }
 }
 </style>

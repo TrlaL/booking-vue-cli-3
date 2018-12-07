@@ -2,7 +2,7 @@
   <div class="menu-button" @click="handle">
     <div class="desktop">
       <img class="icon" src="@/assets/images/user-gray.svg">
-      <div class="current">{{ title }}</div>
+      <div class="current">MENU</div>
       <img class="icon" src="@/assets/images/arrow-bottom.svg">
     </div>
     <img class="icon mobile" src="@/assets/images/user-black.svg">
@@ -24,9 +24,6 @@ export default {
   computed: {
     menuListVisible () {
       return this.$store.getters.menuListVisible
-    },
-    title () {
-      return this.$route.meta.title
     }
   },
   methods: {
@@ -74,6 +71,7 @@ export default {
 
 @include desktop {
   .menu-button {
+    user-select: none;
     width: 250px;
   }
 
@@ -97,6 +95,7 @@ export default {
     align-items: center;
     cursor: pointer;
     display: flex;
+    user-select: none;
   }
 
   .desktop {

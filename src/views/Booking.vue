@@ -20,8 +20,13 @@
               :person="kid"
               :price="item.price"
               @changePerson="changePerson"
+              @handleError="showModal"
+              @savePerson="savePerson"
             />
-            <a class="add" @click="addPerson('kid')">+ Add Kid Profile</a>
+            <div v-show="!kids.length">You have not added children yet</div>
+            <div class="add">
+              <a @click="addPerson('kid')">+ Add Kid Profile</a>
+            </div>
           </div>
           <Loading v-else />
         </div>
@@ -34,8 +39,13 @@
               :person="caregiver"
               :price="item.price"
               @changePerson="changePerson"
+              @handleError="showModal"
+              @savePerson="savePerson"
             />
-            <a class="add" @click="addPerson('caregiver')">+ Add Caregiver Profile</a>
+            <div v-show="!caregivers.length">You have not added children yet</div>
+            <div class="add">
+              <a @click="addPerson('caregiver')">+ Add Caregiver Profile</a>
+            </div>
           </div>
           <Loading v-else />
         </div>
@@ -45,23 +55,25 @@
             <div class="additional">
               <div>Additional kid(s):</div>
               <div>
-                <Counter v-model="additionalKids" />
-                <span>${{ additionalKids * item.price }}</span>
+                <Counter v-model="childsCount" @input="calculate" />
+                <span>${{ childsCount * item.price }}</span>
               </div>
             </div>
             <div class="additional">
               <div>Additional adult(s):</div>
               <div>
-                <Counter v-model="additionalAdults" />
-                <span>${{ additionalAdults * item.price }}</span>
+                <Counter v-model="adultsCount" @input="calculate" />
+                <span>${{ adultsCount * item.price }}</span>
               </div>
             </div>
           </template>
         </div>
       </div>
       <BookingTotal
-        :totalSum="totalSum"
-        @book="handleNewPersons"
+        :cards="cards"
+        :fee="fee"
+        :price="price"
+        @book="book"
         @handleError="showModal"
       />
     </div>
@@ -69,31 +81,49 @@
 </template>
 
 <script>
+import braintree from 'braintree-web'
 import BookingPerson from '@/components/booking/BookingPerson'
 import BookingTotal from '@/components/booking/BookingTotal'
 import Counter from '@/components/common/Counter'
 import Loading from '@/components/common/Loading'
 import Modal from '@/components/common/Modal'
 import { getActivity } from '@/api/activities'
-import { getFamilyMembers, saveAdult, saveChild } from '@/api/profile'
+import { createBooking, calculateDraft } from '@/api/bookings'
+import { getCards } from '@/api/cards'
+import { getClientToken, getFamilyMembers, saveAdult, saveChild } from '@/api/profile'
 
 export default {
   components: { BookingPerson, BookingTotal, Counter, Loading, Modal },
   data () {
     return {
       additionalVisible: false,
-      additionalKids: 0,
-      additionalAdults: 0,
+      adultsCount: 0,
+      childsCount: 0,
+      cards: [],
+      clientToken: '',
+      fee: 0,
       isLoaded: false,
       item: {},
       members: [],
       message: '',
+      price: 0,
       selectedPersons: []
     }
   },
   computed: {
     activityId () {
       return this.$route.params.id
+    },
+    body () {
+      return {
+        activityId: this.item.id,
+        activityDate: '2019-01-01',
+        adultsCount: this.adultsCount,
+        childsCount: this.childsCount,
+        familyMembers: this.selectedPersons.map(person => person.id),
+        useMoney: false,
+        withOwner: false
+      }
     },
     caregivers () {
       return this.members.filter(member => !member.isChild)
@@ -103,25 +133,45 @@ export default {
     },
     newPersons () {
       return this.members.filter(member => member.isNew)
-    },
-    totalSum () {
-      return this.item.price * (this.selectedPersons.length + this.additionalKids + this.additionalAdults)
     }
   },
   created () {
+    this.getClientToken()
     this.getActivity(this.activityId)
     this.getFamilyMembers()
+    this.getCards()
   },
   methods: {
+    async createBooking (data) {
+      let response = await createBooking(data)
+      console.log(response)
+    },
+    async calculateDraft (data) {
+      let response = await calculateDraft(data)
+      if (response.data) {
+        this.price = response.data.price
+        this.fee = response.data.fee
+      }
+    },
     async getActivity (id) {
       let response = await getActivity(id)
       if (response.data.return) {
         this.item = response.data.item
+      } else {
+        this.$router.push('/not-found')
       }
+    },
+    async getCards () {
+      let response = await getCards()
+      if (response.data) this.cards = response.data
+    },
+    async getClientToken () {
+      let response = await getClientToken()
+      if (response.data) this.clientToken = response.data.token
     },
     async getFamilyMembers () {
       let response = await getFamilyMembers()
-      if (response.data.list) {
+      if (response.data) {
         this.isLoaded = true
         this.members = response.data.list.map((member, index) => {
           return { ...member, index }
@@ -130,14 +180,14 @@ export default {
     },
     async saveAdult (data) {
       let response = await saveAdult(data)
-      if (!response.data.result) {
-        alert('error')
+      if (response.data.result) {
+        this.getFamilyMembers()
       }
     },
     async saveChild (data) {
       let response = await saveChild(data)
-      if (!response.data.result) {
-        alert('error')
+      if (response.data.result) {
+        this.getFamilyMembers()
       }
     },
     addPerson (type) {
@@ -147,15 +197,47 @@ export default {
         fullName: ''
       })
     },
-    changePerson (person) {
-      if (person.isActive) return this.selectedPersons.push(person)
-      this.selectedPersons = this.selectedPersons.filter(pers => pers.index !== person.index)
-    },
-    handleNewPersons () {
-      this.newPersons.forEach(person => {
-        let api = person.isChild ? this.saveChild : this.saveAdult
-        api({ fullName: person.fullName })
+    book (card) {
+      // this.newPersons.forEach(person => {
+      //   let api = person.isChild ? this.saveChild : this.saveAdult
+      //   api({ fullName: person.fullName })
+      // })
+      braintree.client.create({
+        authorization: this.clientToken
+      }, (error, client) => {
+        client.request({
+          endpoint: 'payment_methods/credit_cards',
+          method: 'post',
+          data: {
+            creditCard: {
+              number: card.number,
+              expirationDate: card.expireDate,
+              cvv: '123'
+            }
+          }
+        }, (error, response) => {
+          if (error) return console.log(error)
+          this.createBooking({
+            ...this.body,
+            paymentNonce: response.creditCards[0].nonce
+          })
+        })
       })
+    },
+    calculate () {
+      this.calculateDraft(this.body)
+    },
+    changePerson (person) {
+      if (person.isActive) {
+        this.selectedPersons.push(person)
+      } else {
+        this.selectedPersons = this.selectedPersons.filter(pers => pers.index !== person.index)
+      }
+      this.calculate()
+    },
+    savePerson (person, isChild) {
+      if (isChild) return this.saveChild(person)
+      this.saveAdult(person)
     },
     showModal (message) {
       this.message = message
@@ -172,6 +254,45 @@ export default {
 .modal-message {
   font-size: 18px;
   text-align: center;
+}
+
+.add {
+  color: #D9429F;
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  justify-content: flex-end;
+  text-decoration: underline;
+}
+
+.add-attendee {
+  color: #918A8C;
+  cursor: pointer;
+  display: flex;
+  font-size: 12px;
+  justify-content: flex-end;
+  padding: 0;
+  text-decoration: underline;
+  user-select: none;
+}
+
+.additional {
+  align-items: center;
+  color: #918A8C;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  margin: 7px 0 7px 0;
+
+  div:last-child {
+    align-items: center;
+    display: flex;
+
+    span {
+      width: 50px;
+      text-align: right;
+    }
+  }
 }
 
 @include desktop {
@@ -283,43 +404,6 @@ export default {
 
   .add-attendee {
     padding-right: 20px;
-  }
-}
-
-.add {
-  color: #D9429F;
-  cursor: pointer;
-  font-size: 14px;
-  text-decoration: underline;
-}
-
-.add-attendee {
-  color: #918A8C;
-  cursor: pointer;
-  display: flex;
-  font-size: 12px;
-  justify-content: flex-end;
-  padding: 0;
-  text-decoration: underline;
-  user-select: none;
-}
-
-.additional {
-  align-items: center;
-  color: #918A8C;
-  font-size: 12px;
-  display: flex;
-  justify-content: space-between;
-  margin: 7px 0 7px 0;
-
-  div:last-child {
-    align-items: center;
-    display: flex;
-
-    span {
-      width: 50px;
-      text-align: right;
-    }
   }
 }
 </style>

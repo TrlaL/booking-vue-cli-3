@@ -65,4 +65,8 @@ export default {
   font-weight: 500;
   padding: 10px;
 }
+
+.message {
+  text-align: center;
+}
 </style>
