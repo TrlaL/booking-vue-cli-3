@@ -2,8 +2,8 @@
   <div class="container">
     <Navigation />
     <div class="box">
-      <div class="code">404 Not Found</div>
-      <div class="text">The requested resource could not be found.</div>
+      <div class="code">Not Found</div>
+      <div class="text">The requested resource could not be found</div>
     </div>
   </div>
 </template>

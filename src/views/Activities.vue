@@ -78,15 +78,12 @@ export default {
       switch (type) {
         case 'favorites':
           this.api = getFavorites
-          this.title = 'FAVORITES'
           break
         case 'going':
           this.api = getCurrentActivities
-          this.title = 'I`M GOING'
           break
         case 'past-booked':
           this.api = getPastActivities
-          this.title = 'PAST BOOKED'
           break
       }
     }
