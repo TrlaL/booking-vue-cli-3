@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div class="home-filters" v-show="isFiltersOpened">
+    <div class="activities-filters" v-show="isFiltersOpened">
       <div class="columns">
         <div class="column">
           <div class="filter">
@@ -37,7 +37,7 @@
         <div class="column">
           <div class="filter">
             <div class="title">Kid(s) age?</div>
-            <AgesTable v-model="ages" @input="setAge" />
+            <AgesTable v-model="age" @input="setAge" />
           </div>
           <div class="filter">
             <div class="title">Price:</div>
@@ -98,7 +98,7 @@ export default {
   components: { AgesTable, Calendar, Checkbox, DropDownList, Slider },
   data () {
     return {
-      ages: null,
+      age: null,
       categories: [1, 2, 3, 4],
       regionId: 5060716,
       cities: [],
@@ -180,7 +180,7 @@ export default {
     },
     cancel () {
       this.filters = {}
-      this.ages = null
+      this.age = null
       this.categories = [1, 2, 3, 4]
       this.onlyWithParents = false
       this.onlyOvernightCamp = false
@@ -214,11 +214,8 @@ export default {
       return hour
     },
     setAge () {
-      if (!this.ages) return delete this.filters.ages
-      this.filters.ages = [{
-        agesFrom: this.ages[0],
-        agesTo: this.ages[1]
-      }]
+      if (!this.age) return delete this.filters.age
+      this.filters.age = this.age
     },
     setAdditional (additional) {
       let currentValue = this[additional]
@@ -320,13 +317,13 @@ export default {
 }
 
 @include desktop {
-  .home-filters {
+  .activities-filters {
     margin-top: 40px;
   }
 }
 
 @include mobile {
-  .home-filters {
+  .activities-filters {
     border-top: 1px solid #ddd;
   }
 

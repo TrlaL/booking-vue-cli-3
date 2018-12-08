@@ -7,7 +7,6 @@ export default new Vuex.Store({
   state: {
     filters: {},
     isFiltersOpened: false,
-    isLoadedItems: true,
     menuListVisible: false,
     modals: {},
     openedDropDownId: 1,
@@ -16,7 +15,6 @@ export default new Vuex.Store({
   getters: {
     filters: (state) => state.filters,
     isFiltersOpened: (state) => state.isFiltersOpened,
-    isLoadedItems: (state) => state.isLoadedItems,
     menuListVisible: (state) => state.menuListVisible,
     modals: (state) => state.modals,
     modalVisible: (state) => (id) => state.modals[id],
@@ -29,9 +27,6 @@ export default new Vuex.Store({
     },
     SET_FILTERS_OPENED (state, opened) {
       state.isFiltersOpened = opened
-    },
-    SET_LOADED_STATUS (state, status) {
-      state.isLoadedItems = status
     },
     SET_MENU_LIST_VISIBLE (state, visible) {
       state.menuListVisible = visible

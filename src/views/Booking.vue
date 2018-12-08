@@ -127,7 +127,7 @@ export default {
         adultsCount: this.adultsCount,
         childsCount: this.childsCount,
         familyMembers: this.selectedPersons.map(person => person.id),
-        useMoney: false,
+        useMoney: true,
         withOwner: false
       }
     },

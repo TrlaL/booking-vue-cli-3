@@ -2,7 +2,7 @@ import { instance, token, setAuthToken } from './config'
 
 setAuthToken(token)
 
-export function createBooking (data) {
+export function createBooking (data = {}) {
   return instance.post('/booking/create', {
     activityId: data.activityId,
     activityDate: data.activityDate,
@@ -15,7 +15,7 @@ export function createBooking (data) {
   })
 }
 
-export function calculateDraft (data) {
+export function calculateDraft (data = {}) {
   return instance.post('/bookings/calculate-draft', {
     activityId: data.activityId,
     activityDate: data.activityDate,
@@ -28,7 +28,7 @@ export function calculateDraft (data) {
   })
 }
 
-export function getCurrentActivities (data) {
+export function getCurrentActivities (data = {}) {
   return instance.put('/bookings/current', {
     filters: data.filters,
     pages: data.pages,
@@ -36,7 +36,7 @@ export function getCurrentActivities (data) {
   })
 }
 
-export function getPastActivities (data) {
+export function getPastActivities (data = {}) {
   return instance.put('/bookings/past', {
     filters: data.filters,
     pages: data.pages,

@@ -18,22 +18,22 @@ export default {
   data () {
     return {
       items: [
-        { name: 'UNDER 1', value: [0, 1] },
-        { name: '1', value: [1, 1] },
-        { name: '2', value: [2, 2] },
-        { name: '3', value: [3, 3] },
-        { name: '4', value: [4, 4] },
-        { name: '5', value: [5, 5] },
-        { name: '6', value: [6, 6] },
-        { name: '7', value: [7, 7] },
-        { name: '8', value: [8, 8] },
-        { name: '9', value: [9, 9] },
-        { name: '10', value: [10, 10] },
-        { name: '11', value: [11, 11] },
-        { name: '12', value: [12, 12] },
-        { name: '13', value: [13, 13] },
-        { name: '14+', value: [14, 100] },
-        { name: 'Caregivers', value: [15, 100] }
+        { name: 'UNDER 1', value: '<1' },
+        { name: '1', value: '1' },
+        { name: '2', value: '2' },
+        { name: '3', value: '3' },
+        { name: '4', value: '4' },
+        { name: '5', value: '5' },
+        { name: '6', value: '6' },
+        { name: '7', value: '7' },
+        { name: '8', value: '8' },
+        { name: '9', value: '9' },
+        { name: '10', value: '10' },
+        { name: '11', value: '11' },
+        { name: '12', value: '12' },
+        { name: '13', value: '13' },
+        { name: '14+', value: '14<' },
+        { name: 'Caregivers', value: 'caregiver' }
       ],
       selected: null
     }

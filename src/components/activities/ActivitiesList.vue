@@ -3,22 +3,18 @@
     <div class="list" v-if="items.length">
       <Activity class="item" v-for="(item, i) in items" :key="i" :item="item" />
     </div>
-    <div class="empty" v-else-if="isLoadedItems && !items.length">It's empty here</div>
+    <div class="empty" v-else-if="isLoaded && !items.length">It's empty here</div>
   </div>
 </template>
 
 <script>
-import Activity from './Activity'
+import Activity from '@/components/common/Activity'
 
 export default {
   components: { Activity },
   props: {
+    isLoaded: { required: true, type: Boolean },
     items: { required: true, type: Array }
-  },
-  computed: {
-    isLoadedItems () {
-      return this.$store.getters.isLoadedItems
-    }
   }
 }
 </script>

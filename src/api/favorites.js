@@ -2,28 +2,24 @@ import { instance, token, setAuthToken } from './config'
 
 setAuthToken(token)
 
-export function getFavorites (params = {}) {
+export function getFavorites (data = {}) {
+  data.filters = data.filters || {}
+  data.pages = data.pages || {}
   return instance.get('/favorites/list', {
     params: {
-      activityTypeId: params.activityTypeId,
-      ipp: params.ipp,
-      page: params.page
+      activityTypeId: data.filters.activityTypeId,
+      ipp: data.pages.ipp,
+      page: data.pages.page
     }
   })
 }
 
 export function setFavorite (activityId, activityDate) {
-  return instance.post('/favorites/set', {
-    activityId,
-    activityDate
-  })
+  return instance.post('/favorites/set', { activityId, activityDate })
 }
 
 export function unsetFavorite (activityId, activityDate) {
   return instance.delete('/favorites/unset', {
-    data: {
-      activityId,
-      activityDate
-    }
+    data: { activityId, activityDate }
   })
 }

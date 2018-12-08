@@ -12,15 +12,13 @@
 
 <script>
 export default {
+  props: {
+    isLoaded: { required: true, type: Boolean }
+  },
   data () {
     return {
       items: ['DROP-INS', 'SEMESTERS', 'CAMPS'],
       selected: 0
-    }
-  },
-  computed: {
-    isLoadedItems () {
-      return this.$store.getters.isLoadedItems
     }
   },
   methods: {
@@ -30,7 +28,7 @@ export default {
       }
     },
     select (index) {
-      if (!this.isLoadedItems) return
+      if (!this.isLoaded) return
       this.selected = index
       this.$emit('changeType', index + 1)
     }

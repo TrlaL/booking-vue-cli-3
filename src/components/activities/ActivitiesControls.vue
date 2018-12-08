@@ -1,5 +1,5 @@
 <template>
-  <div class="home-controls">
+  <div class="activities-controls">
     <div class="controls">
       <div class="filters" :class="className" @click="toggleFilters">
         <img class="icon" src="@/assets/images/filters.svg">
@@ -15,16 +15,16 @@
       </div>
       <MenuButton />
     </div>
-    <HomeFilters />
+    <ActivitiesFilters />
   </div>
 </template>
 
 <script>
-import HomeFilters from './HomeFilters'
+import ActivitiesFilters from './ActivitiesFilters'
 import MenuButton from '../common/MenuButton'
 
 export default {
-  components: { HomeFilters, MenuButton },
+  components: { ActivitiesFilters, MenuButton },
   data () {
     return {
       query: this.searchQuery
@@ -65,7 +65,7 @@ export default {
 
 <style lang="scss" scoped>
 @include desktop {
-  .home-controls {
+  .activities-controls {
     border-bottom: 1px solid #ddd;
     display: flex;
     flex-direction: column;
@@ -138,7 +138,7 @@ export default {
 }
 
 @include mobile {
-  .controls {
+  .activities-controls {
     display: none;
   }
 }

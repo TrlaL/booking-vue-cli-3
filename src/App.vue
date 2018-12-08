@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" @click="handle">
     <Header />
     <transition mode="out-in" name="fade">
       <router-view :key="$route.path" />
@@ -13,7 +13,12 @@ import Footer from './components/common/Footer'
 import Header from './components/common/Header'
 
 export default {
-  components: { Footer, Header }
+  components: { Footer, Header },
+  methods: {
+    handle () {
+      this.$store.commit('SET_MENU_LIST_VISIBLE', false)
+    }
+  }
 }
 </script>
 

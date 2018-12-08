@@ -120,6 +120,7 @@ export default {
 <style lang="scss" scoped>
 @include desktop {
   .desktop {
+    background: #fff;
     border: 1px solid #ddd;
     border-radius: 5px;
     display: flex;

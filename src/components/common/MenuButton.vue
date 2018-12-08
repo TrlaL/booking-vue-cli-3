@@ -1,5 +1,5 @@
 <template>
-  <div class="menu-button" @click="handle">
+  <div class="menu-button" @click.stop="handle">
     <div class="desktop">
       <img class="icon" src="@/assets/images/user-gray.svg">
       <div class="current">MENU</div>

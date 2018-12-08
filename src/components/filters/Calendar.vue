@@ -139,7 +139,7 @@ export default {
   cursor: pointer;
 
   &.current {
-    background: #eee;
+    background: #ddd;
     font-weight: bold;
   }
 
@@ -149,7 +149,7 @@ export default {
   }
 
   &:hover {
-    background: #eee;
+    background: #ddd;
   }
 }
 </style>

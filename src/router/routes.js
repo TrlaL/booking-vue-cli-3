@@ -2,32 +2,31 @@ import Account from '@/views/Account'
 import Activities from '@/views/Activities'
 import Booking from '@/views/Booking'
 import Family from '@/views/Family'
-import Home from '@/views/Home'
 import NotFound from '@/views/NotFound'
 
 export default [
   {
     path: '/',
-    name: 'home',
-    meta: { title: 'HOME' },
-    component: Home
+    name: 'activities',
+    meta: { id: 0, title: 'ACTIVITIES' },
+    component: Activities
   },
   {
     path: '/favorites',
     name: 'favorites',
-    meta: { title: 'FAVORITES' },
+    meta: { id: 1, title: 'FAVORITES' },
     component: Activities
   },
   {
     path: '/going',
     name: 'going',
-    meta: { title: 'I`M GOING' },
+    meta: { id: 2, title: 'I`M GOING' },
     component: Activities
   },
   {
     path: '/past-booked',
     name: 'past-booked',
-    meta: { title: 'PAST BOOKED' },
+    meta: { id: 3, title: 'PAST BOOKED' },
     component: Activities
   },
   {
