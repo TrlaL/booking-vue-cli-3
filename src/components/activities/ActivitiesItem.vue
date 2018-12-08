@@ -23,8 +23,11 @@
           <img @click="toggleFavorite" :src="require(`@/assets/images/${favoriteIcon}`)">
         </div>
         <div class="price">${{ item.price }}</div>
-        <button class="book" @click="book">Book</button>
-        <div class="seats">Seats Left: {{ seatsLeft }}</div>
+        <button class="book" @click="handleButton">{{ buttonText }}</button>
+        <div class="seats">
+          <a v-if="isPage('going')" @click="cancelBooking">Cancel Activity</a>
+          <div v-else>Seats Left: {{ seatsLeft }}</div>
+        </div>
       </div>
     </div>
     <div class="mobile">
@@ -32,13 +35,13 @@
         <img class="image" :src="frontImage">
         <div class="provided">Provided by: {{ item.merchantName }}</div>
         <div class="date">{{ item.scheduleFrom }}<br>{{ startTime }} to {{ endTime }}</div>
-        <div class="price" @click="book">${{ item.price }}</div>
+        <div class="price" @click="handleButton">${{ item.price }}</div>
       </div>
       <div class="section">
         <div class="info">
           <div class="title">{{ item.name }}</div>
           <div>Ages: {{ ageFrom }} - {{ ageTo }}</div>
-          <div>Seats left: 3</div>
+          <div>Seats left: {{ seatsLeft }}</div>
         </div>
         <div class="arrow">
           <img src="@/assets/images/arrow-right.svg">
@@ -63,32 +66,33 @@ import { setFavorite, unsetFavorite } from '@/api/favorites'
 
 export default {
   props: {
-    item: { required: true, type: Object }
+    item: { required: true, type: Object },
+    type: { required: true, type: String }
   },
   computed: {
-    favoriteIcon () {
-      return this.item.isFavorite ? 'my-favorite.svg' : 'favorite.svg'
-    },
-    frontImage () {
-      return this.item.photos ? this.item.photos[0] : ''
-    },
     ageFrom () {
       return this.item.ageMonthFrom ? this.item.ageMonthFrom + ' months' : this.item.ageFrom + ' year'
     },
     ageTo () {
       return this.item.ageMonthTo ? this.item.ageMonthTo + ' months' : this.item.ageTo + ' year'
     },
-    startTime () {
-      return this.getHours(new Date(this.item.startDateTime))
+    buttonText () {
+      return this.isPage('activities') ? 'Book' : 'View'
     },
     endTime () {
       return this.getHours(new Date(this.item.endDateTime))
     },
+    favoriteIcon () {
+      return this.item.isFavorite ? 'my-favorite.svg' : 'favorite.svg'
+    },
+    frontImage () {
+      return this.item.photos ? this.item.photos[0] : ''
+    },
     seatsLeft () {
-      // let date = new Date(this.item.startDateTime)
-      // let format = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-      // let spot = this.item.activityTypeId === 1 ? this.item.leftSpots.find(item => item.date === format) : this.item.leftSpots[0]
-      return 0
+      return this.item.hasOwnProperty('seatsLeft') ? this.item.seatsLeft[0].spotsLeft : 0
+    },
+    startTime () {
+      return this.getHours(new Date(this.item.startDateTime))
     }
   },
   methods: {
@@ -104,11 +108,18 @@ export default {
         this.$emit('toggleFavorite', false)
       }
     },
-    book () {
-      this.$router.push(`/booking/${this.item.id}`)
+    cancelBooking () {
+      this.$emit('cancelBooking', this.item.id)
     },
     getHours (date) {
       return date.toLocaleString('en-US', { hour: 'numeric', hour12: true })
+    },
+    handleButton () {
+      if (this.isPage('activities')) return this.$router.push(`/booking/${this.item.id}`)
+      alert('view')
+    },
+    isPage (page) {
+      return this.type === page
     },
     toggleFavorite () {
       this.item.isFavorite = !this.item.isFavorite
@@ -197,6 +208,13 @@ export default {
     flex-direction: column;
     justify-content: space-between;
     padding: 15px 15px 15px 0;
+
+    a {
+      color: #828282;
+      cursor: pointer;
+      font-size: 12px;
+      text-decoration: underline;
+    }
 
     .icons {
       display: flex;

@@ -15,6 +15,10 @@ export function createBooking (data = {}) {
   })
 }
 
+export function cancelBooking (bookingId) {
+  return instance.put('/bookings/cancel', { bookingId })
+}
+
 export function calculateDraft (data = {}) {
   return instance.post('/bookings/calculate-draft', {
     activityId: data.activityId,

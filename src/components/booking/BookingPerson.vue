@@ -45,7 +45,7 @@ export default {
     save () {
       this.$validator.validateAll().then(checked => {
         if (checked) return this.$emit('savePerson', this.person, this.person.isChild)
-        this.$emit('handleError', 'Enter full name!')
+        this.$emit('handleError', 'Enter a full name for the new person!')
       })
     }
   }

@@ -150,13 +150,21 @@ export default {
   methods: {
     async createBooking (data) {
       let response = await createBooking(data)
-      console.log(response)
+      this.$store.commit('SET_BOOKING_PROGRESS', false)
+      if (response.data.result) {
+        this.$store.commit('SET_BOOKING_STATUS', true)
+        this.$router.push('/complete')
+      } else {
+        this.showModal(response.data.message)
+      }
     },
     async calculateDraft (data) {
       let response = await calculateDraft(data)
       if (response.data) {
         this.price = response.data.price
         this.fee = response.data.fee
+      } else {
+        this.showModal('An error occurred while calculating the price')
       }
     },
     async getActivity (id) {
@@ -204,10 +212,7 @@ export default {
       })
     },
     book (card) {
-      // this.newPersons.forEach(person => {
-      //   let api = person.isChild ? this.saveChild : this.saveAdult
-      //   api({ fullName: person.fullName })
-      // })
+      this.$store.commit('SET_BOOKING_PROGRESS', true)
       braintree.client.create({
         authorization: this.clientToken
       }, (error, client) => {
@@ -218,11 +223,11 @@ export default {
             creditCard: {
               number: card.number,
               expirationDate: card.expireDate,
-              cvv: '123'
+              cvv: card.cvv
             }
           }
         }, (error, response) => {
-          if (error) return console.log(error)
+          if (error) return this.showModal('error')
           this.createBooking({
             ...this.body,
             paymentNonce: response.creditCards[0].nonce

@@ -1,6 +1,7 @@
 import Account from '@/views/Account'
 import Activities from '@/views/Activities'
 import Booking from '@/views/Booking'
+import Complete from '@/views/Complete'
 import Family from '@/views/Family'
 import NotFound from '@/views/NotFound'
 
@@ -40,6 +41,12 @@ export default [
     name: 'booking',
     meta: { title: 'BOOKING' },
     component: Booking
+  },
+  {
+    path: '/complete',
+    name: 'complete',
+    meta: { title: 'BOOKING COMPLETE' },
+    component: Complete
   },
   {
     path: '/family',

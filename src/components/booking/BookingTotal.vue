@@ -34,7 +34,7 @@
       </div>
     </div>
     <Checkbox class="checkbox" v-model="checkbox">Save credit card for future bookings</Checkbox>
-    <button class="button" @click="handle">Book</button>
+    <button class="button" @click="handle" :disabled="bookingInProgress">{{ buttonText }}</button>
   </div>
 </template>
 
@@ -55,14 +55,23 @@ export default {
         expireDate: '',
         cvv: ''
       },
-      checkbox: false
+      checkbox: false,
+      disabled: false
+    }
+  },
+  computed: {
+    bookingInProgress () {
+      return this.$store.getters.bookingInProgress
+    },
+    buttonText () {
+      return this.bookingInProgress ? 'Waiting...' : 'Book'
     }
   },
   methods: {
     handle () {
       this.$validator.validateAll().then(checked => {
         if (checked) return this.$emit('book', this.card)
-        this.$emit('handleError', 'You entered incorrect data!')
+        this.$emit('handleError', 'The data for the card is not valid!')
       })
     }
   },

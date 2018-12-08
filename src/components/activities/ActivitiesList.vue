@@ -6,6 +6,8 @@
         v-for="(item, i) in items"
         :key="i"
         :item="item"
+        :type="type"
+        @cancelBooking="cancelBooking"
         @toggleFavorite="toggleFavorite"
       />
     </div>
@@ -20,9 +22,13 @@ export default {
   components: { ActivitiesItem },
   props: {
     isLoaded: { required: true, type: Boolean },
-    items: { required: true, type: Array }
+    items: { required: true, type: Array },
+    type: { required: true, type: String }
   },
   methods: {
+    cancelBooking (id) {
+      this.$emit('cancelBooking', id)
+    },
     toggleFavorite (state) {
       this.$emit('toggleFavorite', state)
     }
@@ -39,12 +45,12 @@ export default {
 
 @include desktop {
   .activities-list {
-    padding: 0 15px 0 15px;
+    padding: 0 15px 15px 15px;
   }
 
   .item {
     border-radius: 5px;
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
     margin-bottom: 15px;
   }
 
@@ -63,7 +69,7 @@ export default {
   }
 
   .item {
-    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.2);
     margin-bottom: 10px;
   }
 

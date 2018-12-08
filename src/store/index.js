@@ -5,7 +5,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    bookingInProgress: false,
     filters: {},
+    isBookingComplete: true,
     isFiltersOpened: false,
     menuListVisible: false,
     modals: {},
@@ -13,7 +15,9 @@ export default new Vuex.Store({
     searchQuery: ''
   },
   getters: {
+    bookingInProgress: (state) => state.bookingInProgress,
     filters: (state) => state.filters,
+    isBookingComplete: (state) => state.isBookingComplete,
     isFiltersOpened: (state) => state.isFiltersOpened,
     menuListVisible: (state) => state.menuListVisible,
     modals: (state) => state.modals,
@@ -22,8 +26,14 @@ export default new Vuex.Store({
     searchQuery: (state) => state.searchQuery
   },
   mutations: {
+    SET_BOOKING_PROGRESS (state, progress) {
+      state.bookingInProgress = progress
+    },
     SET_FILTERS (state, filters) {
       state.filters = { ...filters }
+    },
+    SET_BOOKING_STATUS (state, status) {
+      state.isBookingComplete = status
     },
     SET_FILTERS_OPENED (state, opened) {
       state.isFiltersOpened = opened

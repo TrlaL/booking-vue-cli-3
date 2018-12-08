@@ -138,7 +138,7 @@ export default {
 }
 
 @include mobile {
-  .activities-controls {
+  .controls {
     display: none;
   }
 }
