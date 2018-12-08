@@ -1,5 +1,5 @@
 <template>
-  <div class="activity">
+  <div class="activities-item">
     <div class="desktop">
       <div class="front-image">
         <img :src="frontImage">
@@ -92,6 +92,18 @@ export default {
     }
   },
   methods: {
+    async setFavorite (id, date) {
+      let response = await setFavorite(id, date)
+      if (response.data.result) {
+        this.$emit('toggleFavorite', true)
+      }
+    },
+    async unsetFavorite (id, date) {
+      let response = await unsetFavorite(id, date)
+      if (response.data.result) {
+        this.$emit('toggleFavorite', false)
+      }
+    },
     book () {
       this.$router.push(`/booking/${this.item.id}`)
     },
@@ -99,19 +111,12 @@ export default {
       return date.toLocaleString('en-US', { hour: 'numeric', hour12: true })
     },
     toggleFavorite () {
+      this.item.isFavorite = !this.item.isFavorite
       if (this.item.isFavorite) {
-        this.unsetFavorite()
+        this.setFavorite(this.item.id)
       } else {
-        this.setFavorite()
+        this.unsetFavorite(this.item.id)
       }
-    },
-    setFavorite () {
-      this.item.isFavorite = true
-      setFavorite(this.item.id, null)
-    },
-    unsetFavorite () {
-      this.item.isFavorite = false
-      unsetFavorite(this.item.id, null)
     }
   }
 }
@@ -150,7 +155,7 @@ export default {
     flex: 1;
     flex-direction: column;
     justify-content: space-between;
-    padding: 15px 0 15px 50px;
+    padding: 15px 15px 15px 50px;
   }
 
   .title {
@@ -168,8 +173,10 @@ export default {
     line-height: 30px;
 
     span {
-      align-items: center;
-      display: flex;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       width: 50%;
     }
   }

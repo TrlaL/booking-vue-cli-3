@@ -65,7 +65,6 @@ export default {
   watch: {
     filters (filters) {
       this.reloadItems()
-      console.log(filters)
     },
     searchQuery (query) {
       this.reloadItems()
@@ -77,8 +76,8 @@ export default {
   methods: {
     async getItems (data = {}) {
       this.isLoaded = false
-      let filters = { ...data.filters, ...this.filters, activityTypeId: this.activityTypeId }
-      let pages = { ...data.pages, ipp: this.itemsPerPage }
+      let filters = { activityTypeId: this.activityTypeId, ...this.filters, ...data.filters }
+      let pages = { ipp: this.itemsPerPage, ...data.pages }
       let response = await this.api({ filters, pages, sorting: data.sorting }, this.searchQuery)
       if (response.data.result) {
         this.isLoaded = true

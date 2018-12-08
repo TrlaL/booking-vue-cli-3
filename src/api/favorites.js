@@ -14,11 +14,11 @@ export function getFavorites (data = {}) {
   })
 }
 
-export function setFavorite (activityId, activityDate) {
+export function setFavorite (activityId, activityDate = null) {
   return instance.post('/favorites/set', { activityId, activityDate })
 }
 
-export function unsetFavorite (activityId, activityDate) {
+export function unsetFavorite (activityId, activityDate = null) {
   return instance.delete('/favorites/unset', {
     data: { activityId, activityDate }
   })

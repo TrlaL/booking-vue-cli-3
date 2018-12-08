@@ -1,20 +1,31 @@
 <template>
   <div class="activities-list">
     <div class="list" v-if="items.length">
-      <Activity class="item" v-for="(item, i) in items" :key="i" :item="item" />
+      <ActivitiesItem
+        class="item"
+        v-for="(item, i) in items"
+        :key="i"
+        :item="item"
+        @toggleFavorite="toggleFavorite"
+      />
     </div>
     <div class="empty" v-else-if="isLoaded && !items.length">It's empty here</div>
   </div>
 </template>
 
 <script>
-import Activity from '@/components/common/Activity'
+import ActivitiesItem from './ActivitiesItem'
 
 export default {
-  components: { Activity },
+  components: { ActivitiesItem },
   props: {
     isLoaded: { required: true, type: Boolean },
     items: { required: true, type: Array }
+  },
+  methods: {
+    toggleFavorite (state) {
+      this.$emit('toggleFavorite', state)
+    }
   }
 }
 </script>
