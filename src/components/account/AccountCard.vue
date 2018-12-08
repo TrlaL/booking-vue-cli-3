@@ -52,7 +52,7 @@ export default {
     handle () {
       this.$validator.validateAll().then(checked => {
         if (checked) return this.$emit('handleCard', this.card)
-        this.$emit('handleError', 'You entered incorrect data!')
+        this.$emit('handleError', 'The data for the card is not valid!')
       })
     }
   }

@@ -212,6 +212,7 @@ export default {
       })
     },
     book (card) {
+      if (!this.selectedPersons.length) return this.showModal('Choose family members!')
       this.$store.commit('SET_BOOKING_PROGRESS', true)
       braintree.client.create({
         authorization: this.clientToken
