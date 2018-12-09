@@ -34,7 +34,7 @@
       </div>
     </div>
     <div class="buttons">
-      <button @click="handle">{{ card.isNew ? 'Save' : 'Update' }}</button>
+      <button @click="handle">{[ buttonText }}</button>
       <template v-if="!card.isNew">
         <button class="mobile-remove" @click="$emit('deleteCard', card.id)">Remove</button>
         <img class="desktop-remove" src="@/assets/images/reset.svg" @click="$emit('deleteCard', card.id)">
@@ -47,6 +47,11 @@
 export default {
   props: {
     card: { required: true, type: Object }
+  },
+  computed: {
+    buttonText () {
+      return this.card.isNew ? 'Save' : 'Update'
+    }
   },
   methods: {
     handle () {

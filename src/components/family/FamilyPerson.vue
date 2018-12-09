@@ -46,9 +46,9 @@
       </template>
     </div>
     <div class="buttons">
-      <button @click="savePerson(person, data)">{{ data.isNew ? 'Save' : 'Update' }}</button>
+      <button @click="savePerson">{{ data.isNew ? 'Save' : 'Update' }}</button>
       <template v-if="!data.isNew">
-        <button class="mobile-remove" @click="deletePerson(data.id)">Remove</button>
+        <button class="mobile-remove" @click="deletePerson">Remove</button>
         <img class="desktop-remove" src="@/assets/images/reset.svg" @click="deletePerson(data.id)">
       </template>
     </div>
@@ -73,12 +73,12 @@ export default {
     }
   },
   methods: {
-    deletePerson (id) {
-      this.$emit('deletePerson', id)
+    deletePerson () {
+      this.$emit('deletePerson', this.data.id)
     },
-    savePerson (person, data) {
+    savePerson () {
       this.$validator.validateAll().then(checked => {
-        if (checked) return this.$emit('savePerson', person, data)
+        if (checked) return this.$emit('savePerson', this.person, this.data)
         this.$emit('handleError', 'You entered incorrect data!')
       })
     }

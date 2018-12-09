@@ -5,9 +5,10 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    activityTypeId: 1,
     bookingInProgress: false,
     filters: {},
-    isBookingComplete: true,
+    isBookingComplete: false,
     isFiltersOpened: false,
     menuListVisible: false,
     modals: {},
@@ -15,6 +16,7 @@ export default new Vuex.Store({
     searchQuery: ''
   },
   getters: {
+    activityTypeId: (state) => state.activityTypeId,
     bookingInProgress: (state) => state.bookingInProgress,
     filters: (state) => state.filters,
     isBookingComplete: (state) => state.isBookingComplete,
@@ -26,6 +28,9 @@ export default new Vuex.Store({
     searchQuery: (state) => state.searchQuery
   },
   mutations: {
+    SET_ACTIVITY_TYPE_ID (state, id) {
+      state.activityTypeId = id
+    },
     SET_BOOKING_PROGRESS (state, progress) {
       state.bookingInProgress = progress
     },

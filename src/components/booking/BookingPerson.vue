@@ -12,7 +12,7 @@
         @change="handle"
       >
       <div v-else>{{ person.fullName }}</div>
-      <div>{{ person.isChild ? 'Kid' : 'Caregiver' }}</div>
+      <div>{{ personType }}</div>
     </div>
     <div class="controls">
       <button class="save" v-if="person.isNew" @click="save">Save</button>
@@ -36,6 +36,9 @@ export default {
   computed: {
     iconSrc () {
       return this.person.photoLink || require(`@/assets/images/user-gray.svg`)
+    },
+    personType () {
+      return this.person.isChild ? 'Kid' : 'Caregiver'
     }
   },
   methods: {

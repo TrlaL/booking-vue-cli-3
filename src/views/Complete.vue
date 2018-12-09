@@ -127,5 +127,13 @@ export default {
   .form {
     margin-top: 20px;
   }
+
+  .icons img {
+    margin-right: 5px !important;
+
+    &:last-child {
+      margin: 0 !important;
+    }
+  }
 }
 </style>

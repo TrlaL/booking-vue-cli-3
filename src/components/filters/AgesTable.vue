@@ -6,9 +6,7 @@
       :class="selectedClass(i)"
       :key="i"
       @click="setItem(i)"
-    >
-      {{ item.name }}
-    </div>
+    >{{ item.name }}</div>
   </div>
 </template>
 

@@ -121,9 +121,11 @@ export default {
       return this.$route.params.id
     },
     body () {
+      let date = new Date(this.item.startDateTime)
+      let activityDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
       return {
         activityId: this.item.id,
-        activityDate: '2019-01-01',
+        activityDate: this.item.activityTypeId === 1 ? activityDate : null,
         adultsCount: this.adultsCount,
         childsCount: this.childsCount,
         familyMembers: this.selectedPersons.map(person => person.id),
@@ -212,6 +214,7 @@ export default {
       })
     },
     book (card) {
+      console.log(this.body)
       if (!this.selectedPersons.length) return this.showModal('Choose family members!')
       this.$store.commit('SET_BOOKING_PROGRESS', true)
       braintree.client.create({

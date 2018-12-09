@@ -108,19 +108,6 @@ export default {
       onlyOvernightCamp: false,
       onlyWeekend: false,
       price: [0, 200],
-      sliderOptions: {
-        bgStyle: {
-          background: '#ccc'
-        },
-        processStyle: {
-          background: '#D9429F'
-        },
-        dotSize: 20,
-        enableCross: false,
-        height: 5,
-        tooltip: false,
-        tooltipMerge: true
-      },
       time: [8, 20],
       timeStamp: null
     }
@@ -134,6 +121,17 @@ export default {
         ...this.sliderOptions,
         min: 0,
         max: 200
+      }
+    },
+    sliderOptions () {
+      return {
+        bgStyle: { background: '#ccc' },
+        dotSize: 20,
+        enableCross: false,
+        height: 5,
+        processStyle: { background: '#D9429F' },
+        tooltip: false,
+        tooltipMerge: true
       }
     },
     timeSliderOptions () {

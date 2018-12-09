@@ -50,9 +50,10 @@
       <div class="place">
         <div class="target">
           <img class="icon" src="@/assets/images/place.svg">
-          {{ item.address }}
+          <div class="address">{{ item.address }}</div>
         </div>
         <div class="icons">
+          <img src="@/assets/images/close.svg" v-if="isPage('going')" @click="cancelBooking">
           <img src="@/assets/images/share.svg">
           <img @click="toggleFavorite" :src="require(`@/assets/images/${favoriteIcon}`)">
         </div>
@@ -98,15 +99,11 @@ export default {
   methods: {
     async setFavorite (id, date) {
       let response = await setFavorite(id, date)
-      if (response.data.result) {
-        this.$emit('toggleFavorite', true)
-      }
+      if (response.data.result) this.$emit('toggleFavorite', true)
     },
     async unsetFavorite (id, date) {
       let response = await unsetFavorite(id, date)
-      if (response.data.result) {
-        this.$emit('toggleFavorite', false)
-      }
+      if (response.data.result) this.$emit('toggleFavorite', false)
     },
     cancelBooking () {
       this.$emit('cancelBooking', this.item.id)
@@ -283,8 +280,10 @@ export default {
     .provided {
       color: #fff;
       font-weight: 500;
+      max-width: 70%;
       position: absolute;
       right: 15px;
+      text-align: right;
       top: 15px;
       z-index: 10;
     }
@@ -343,7 +342,16 @@ export default {
       align-items: center;
       display: flex;
       flex: 1;
+      overflow: hidden;
       padding: 10px 0 10px 20px;
+
+      .address {
+        padding-right: 5px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+      }
 
       img {
         margin-right: 5px;
@@ -355,6 +363,7 @@ export default {
 
       img {
         border-left: 1px solid #ddd;
+        cursor: pointer;
         padding: 10px;
       }
     }

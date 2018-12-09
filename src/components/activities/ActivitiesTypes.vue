@@ -17,20 +17,23 @@ export default {
   },
   data () {
     return {
-      items: ['DROP-INS', 'SEMESTERS', 'CAMPS'],
-      selected: 0
+      items: ['DROP-INS', 'SEMESTERS', 'CAMPS']
+    }
+  },
+  computed: {
+    activityTypeId () {
+      return this.$store.getters.activityTypeId
     }
   },
   methods: {
-    className (index) {
+    className (i) {
       return {
-        selected: index === this.selected
+        selected: i + 1 === this.activityTypeId
       }
     },
-    select (index) {
+    select (i) {
       if (!this.isLoaded) return
-      this.selected = index
-      this.$emit('changeType', index + 1)
+      this.$store.commit('SET_ACTIVITY_TYPE_ID', i + 1)
     }
   }
 }

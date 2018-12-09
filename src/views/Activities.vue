@@ -4,7 +4,7 @@
     <Navigation v-show="!isActivitiesPage" />
     <div class="box">
       <ActivitiesControls v-show="isActivitiesPage" />
-      <ActivitiesTypes :isLoaded="isLoaded" @changeType="reloadItems" />
+      <ActivitiesTypes :isLoaded="isLoaded" />
       <ActivitiesList :isLoaded="isLoaded" :items="items" :type="type" @cancelBooking="cancelBooking" />
       <Loading class="loading" v-show="!isLoaded" />
       <div class="pagination" v-show="isPaginationVisible">
@@ -36,11 +36,10 @@ export default {
   },
   data () {
     return {
-      activityTypeId: 1,
       functions: [getActivities, getFavorites, getCurrentActivities, getPastActivities],
       isLoaded: false,
       items: [],
-      itemsPerPage: 5,
+      itemsPerPage: 100,
       message: '',
       modalId: 'activities',
       page: 1,
@@ -48,6 +47,9 @@ export default {
     }
   },
   computed: {
+    activityTypeId () {
+      return this.$store.getters.activityTypeId
+    },
     api () {
       return this.functions[this.pageId]
     },
@@ -77,10 +79,13 @@ export default {
     }
   },
   watch: {
-    filters (filters) {
+    activityTypeId () {
       this.reloadItems()
     },
-    searchQuery (query) {
+    filters () {
+      this.reloadItems()
+    },
+    searchQuery () {
       this.reloadItems()
     }
   },
@@ -111,7 +116,6 @@ export default {
     },
     reloadItems (activityTypeId) {
       this.items = []
-      this.activityTypeId = activityTypeId || this.activityTypeId
       this.page = 1
       this.getItems()
     },
@@ -127,7 +131,7 @@ export default {
 .loading {
   display: flex;
   justify-content: center;
-  padding: 10px;
+  padding: 0 10px 10px 10px;
 }
 
 .modal {
