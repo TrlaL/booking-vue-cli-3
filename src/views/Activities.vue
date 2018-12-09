@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <Modal class="modal" :id="modalId">{{ message }}</Modal>
+    <Modal class="modal" :buttons="modalButtons" :id="modalId" @handle="handleModal">{{ message }}</Modal>
     <Navigation v-show="!isActivitiesPage" />
     <div class="box">
       <ActivitiesControls v-show="isActivitiesPage" />
       <ActivitiesTypes :isLoaded="isLoaded" />
-      <ActivitiesList :isLoaded="isLoaded" :items="items" :type="type" @cancelBooking="cancelBooking" />
+      <ActivitiesList :isLoaded="isLoaded" :items="items" :type="type" @cancelBooking="handleCancel" />
       <Loading class="loading" v-show="!isLoaded" />
       <div class="pagination" v-show="isPaginationVisible">
         <a @click="nextPage">Next Page</a>
@@ -36,11 +36,13 @@ export default {
   },
   data () {
     return {
+      cancelId: null,
       functions: [getActivities, getFavorites, getCurrentActivities, getPastActivities],
       isLoaded: false,
       items: [],
       itemsPerPage: 100,
       message: '',
+      modalButtons: false,
       modalId: 'activities',
       page: 1,
       pagesCount: 0
@@ -107,6 +109,15 @@ export default {
     async cancelBooking (id) {
       let response = await cancelBooking(id)
       this.showModal(response.data.message)
+    },
+    handleCancel (id) {
+      this.cancelId = id
+      this.modalButtons = true
+      this.showModal('Are you sure you want to cancel activity?')
+    },
+    handleModal (state) {
+      if (state) this.cancelBooking(this.cancelId)
+      this.modalButtons = false
     },
     nextPage () {
       this.page = (this.page + 1 > this.pagesCount) ? this.pagesCount : this.page + 1

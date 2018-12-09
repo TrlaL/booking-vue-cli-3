@@ -1,17 +1,17 @@
 <template>
   <transition name="fade">
     <div class="modal" v-if="modalVisible">
-      <div class="blackout" @click="setModalVisible(false)"></div>
+      <div class="blackout" @click="handle(false)"></div>
       <div class="box">
-        <div class="close" @click="handleButton(false)">
+        <div class="close" @click="handle(false)">
           <img class="close" src="@/assets/images/close.svg">
         </div>
         <div class="header" v-if="title">{{ title }}</div>
         <div class="content">
           <slot></slot>
           <div class="modal-buttons" v-show="buttons">
-            <button class="fill" @click="handleButton(false)">NO</button>
-            <button class="border" @click="handleButton(true)">YES</button>
+            <button class="fill" @click="handle(false)">NO</button>
+            <button class="border" @click="handle(true)">YES</button>
           </div>
         </div>
       </div>
@@ -40,12 +40,9 @@ export default {
     this.$store.commit('SET_MODAL_VISIBLE', { id: this.id, visible: false })
   },
   methods: {
-    handleButton (value) {
-      this.setModalVisible(false)
-      this.$emit('clicked', value)
-    },
-    setModalVisible (visible) {
-      this.$store.commit('SET_MODAL_VISIBLE', { id: this.id, visible })
+    handle (state) {
+      this.$store.commit('SET_MODAL_VISIBLE', { id: this.id, visible: false })
+      this.$emit('handle', state)
     }
   }
 }
@@ -116,10 +113,11 @@ export default {
   button {
     border-radius: 8px;
     border: 0;
+    cursor: pointer;
     flex: 1;
     font-size: 18px;
     font-weight: medium;
-    min-width: 200px;
+    max-width: 49%;
     padding: 6px 0 6px 0;
   }
 
