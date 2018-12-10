@@ -5,7 +5,13 @@
     <div class="box">
       <ActivitiesControls v-show="isActivitiesPage" />
       <ActivitiesTypes :isLoaded="isLoaded" />
-      <ActivitiesList :isLoaded="isLoaded" :items="items" :type="type" @cancelBooking="handleCancel" />
+      <ActivitiesList
+        :isLoaded="isLoaded"
+        :items="items"
+        :type="type"
+        @cancelBooking="handleCancel"
+        @toggleFavorite="toggleFavorite"
+      />
       <Loading class="loading" v-show="!isLoaded" />
       <div class="pagination" v-show="isPaginationVisible">
         <a @click="nextPage">Next Page</a>
@@ -40,7 +46,7 @@ export default {
       functions: [getActivities, getFavorites, getCurrentActivities, getPastActivities],
       isLoaded: false,
       items: [],
-      itemsPerPage: 100,
+      itemsPerPage: 5,
       message: '',
       modalButtons: false,
       modalId: 'activities',
@@ -54,6 +60,12 @@ export default {
     },
     api () {
       return this.functions[this.pageId]
+    },
+    data () {
+      return {
+        filters: { activityTypeId: this.activityTypeId, ...this.filters },
+        pages: { ipp: this.itemsPerPage }
+      }
     },
     filters () {
       return this.$store.getters.filters
@@ -97,8 +109,8 @@ export default {
   methods: {
     async getItems (data = {}) {
       this.isLoaded = false
-      let filters = { activityTypeId: this.activityTypeId, ...this.filters, ...data.filters }
-      let pages = { ipp: this.itemsPerPage, ...data.pages }
+      let filters = { ...this.data.filters, ...data.filters }
+      let pages = { ...this.data.pages, ...data.pages }
       let response = await this.api({ filters, pages, sorting: data.sorting }, this.searchQuery)
       if (response.data.result) {
         this.isLoaded = true
@@ -133,6 +145,10 @@ export default {
     showModal (message) {
       this.message = message
       this.$store.commit('SET_MODAL_VISIBLE', { id: this.modalId, visible: true })
+    },
+    toggleFavorite (state) {
+      if (!this.isFavoritesPage || state) return
+      this.reloadItems()
     }
   }
 }
@@ -166,6 +182,7 @@ export default {
     all: unset;
   }
 
+  .loading,
   .pagination {
     padding: 10px;
   }

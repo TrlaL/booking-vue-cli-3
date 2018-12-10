@@ -1,9 +1,7 @@
 <template>
   <div class="app" @click="handle">
     <Header />
-    <transition mode="out-in" name="fade">
-      <router-view :key="$route.path" />
-    </transition>
+    <router-view :key="$route.path" />
     <Footer />
   </div>
 </template>

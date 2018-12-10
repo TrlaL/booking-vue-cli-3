@@ -34,7 +34,7 @@
       </div>
     </div>
     <div class="buttons">
-      <button @click="handle">{[ buttonText }}</button>
+      <button @click="handle">{{ buttonText }}</button>
       <template v-if="!card.isNew">
         <button class="mobile-remove" @click="$emit('deleteCard', card.id)">Remove</button>
         <img class="desktop-remove" src="@/assets/images/reset.svg" @click="$emit('deleteCard', card.id)">
